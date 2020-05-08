@@ -1,0 +1,19 @@
+
+    <%- include('../partials/header.ejs') %>
+    
+</head>
+<body>
+        <%- include('../partials/navigation.ejs') %>
+<h1>Login</h1>
+
+<form action="/login" method="POST">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <input type="text" name="username" placeholder="Korisnicko ime">
+    <input type="password" name="password" pattern=".{6,}" placeholder="password">
+    <button>Login</button>
+</form>
+    <a href="/reset">Reset Password</a>
+
+
+
+</html>

@@ -1,0 +1,21 @@
+<%- include('../partials/header.ejs') %>
+    
+    </head>
+    <body>
+            <%- include('../partials/navigation.ejs') %>
+        <main>
+            <b>Hello world</b>
+
+                <h2>Kontakt forma</h2>
+                <form action="/landing" method="POST" enctype='application/json'>
+                    <div class="form-control">
+                        <input type="text" name="name" placeholder="Vaše ime">
+                        <input type="email" name="email" placeholder="Vaš email">
+                        <textarea id="message" name="message" placeholder="Unesite pitanje" rows="3"></textarea>
+                    </div>
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <button class="btn">Pošalji</button>
+                </form>
+
+        </main>        
+    </body>

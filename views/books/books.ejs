@@ -1,0 +1,63 @@
+<%- include('../partials/header.ejs') %>
+    <link rel="stylesheet" href="/css/product.css">
+    </head>
+
+    <body>
+        <%- include('../partials/navigation.ejs') %>
+        <form action="/books" method="GET" class="form-inline">
+            <div class="form-group">
+                <input type="text" name="sort" placeholder="Sort" class="form-control">
+                <input type="submit" value="Sort" class="btn btn-default">
+            </div>
+            </form>
+        <form action="/books" method="GET" class="form-inline">
+            <div class="form-group">
+                <input type="text" name="search" placeholder="Search" class="form-control">
+                <input type="submit" value="Search" class="btn btn-default">
+            </div>
+            </form>
+        <div class="col-md-12">
+             <% if(noMatch !== null) { %>
+                 <h3><%= noMatch %></h3>
+                 <% } %>
+             </div>
+            <main>
+                <% if (prods.length > 0) { %>
+                    <div class="grid">
+                        <% for (let book of prods) { %>
+                            <article class="card product-item">
+                                <header class="card__header">
+                                    <h1 class="product__title">
+                                        <%= book.title %>
+                                    </h1>
+                                </header>
+                                <div class="card__image">
+                                    <img src="/<%= book.imageUrl %>" alt="<%= book.title %>">
+                                </div>
+                                <div class="card__content">
+                                    <h2 class="product__price">
+                                        <%= book.price %> kn
+                                    </h2>
+                                    <p class="product__description">
+                                        <%= book.description %>
+                                    </p>
+                                </div>
+                                <div class="card__actions">
+                                    <a href="/books/<%= book._id %>" class="btn">Details</a>
+                                    <% if (currentUser) { %>
+                                    <form action="/cart" method="post">
+                                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                        <button class="btn" type="submit">Add to Cart</button>
+                                        <input type="hidden" name="bookId" value="<%= book._id %>">
+                                    </form>
+                                    <% } %>
+                                    </div>
+                            </article>
+                            <% } %>
+                    </div>
+                    <%- include('../partials/pagination.ejs', {currentPage: currentPage, nextPage: nextPage, previousPage: previousPage, lastPage: lastPage, hasNextPage: hasNextPage, hasPreviousPage: hasPreviousPage}) %>
+                    <% } else { %>
+                        <h1>No Products Found!</h1>
+                        <% } %>
+            </main>
+            <%- include('../partials/end.ejs') %>

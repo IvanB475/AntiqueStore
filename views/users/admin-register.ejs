@@ -1,0 +1,16 @@
+
+    <%- include('../partials/header.ejs') %>
+    
+</head>
+<body>
+        <%- include('../partials/navigation.ejs') %>
+<h1>Sign up</h1>
+
+<form action="/admin-register" method="POST">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <input type="text" name="kod" placeholder="Unesite kod">
+    <button>Submit</button>
+</form>
+
+
+</html>

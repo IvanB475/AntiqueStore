@@ -1,0 +1,35 @@
+<%- include('../partials/header.ejs') %>
+<link rel="stylesheet" href="/css/cart.css">
+<script src="https://js.stripe.com/v3/"></script>
+    </head>
+
+    <body>
+        <%- include('../partials/navigation.ejs') %>
+        <main>
+                <ul class="cart__item-list">
+                        <% books.forEach(b => { %>
+                            <li class="cart__item">
+                                <h1><%= b.bookId.title %></h1>
+                                <h5>Količina: <%= b.quantity %></h5>
+                                </li>
+                                <% }) %>
+                            </ul>
+                            <div class="centered">
+                                <h2>Total: <%= totalPrice %> kn</h2>
+                            </div>
+                            <div class="centered">
+                                    <form action="/create-order" method="POST">
+                                        <script
+                                          src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                                          data-key="pk_test_QcCGsaTfvNkLZWP1vhP1U33r00dIq6i6By"
+                                          data-amount="<%= totalPrice * 100 %>"
+                                          data-name="Your Order"
+                                          data-description="Sve knjige koje ste naručili"
+                                          data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                                          data-locale="auto"
+                                          data-currency="hrk">
+                                        </script>
+                                      </form>
+                                </div>
+        </main>
+        <%- include('../partials/end.ejs') %>

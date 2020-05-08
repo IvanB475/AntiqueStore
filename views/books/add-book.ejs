@@ -1,0 +1,76 @@
+<%- include('../partials/header.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css">
+    <link rel="stylesheet" href="/css/product.css">
+</head>
+
+<body>
+   <%- include('../partials/navigation.ejs') %>
+
+    <main>
+        <% if (errorMessage) { %>
+            <div class="user-message user-message--error"><%= errorMessage %></div>
+        <% } %>
+        <form class="product-form" action="/<% if (editing) { %>edit-book/<%= book._id %><% } else { %>add-book<% } %>" method="POST" enctype="multipart/form-data">
+            <div class="form-control">
+                <label for="title">Title</label>
+                <input 
+                    class="<%= validationErrors.find(e => e.param === 'title') ? 'invalid' : '' %>"
+                    type="text" 
+                    name="title" 
+                    id="title" 
+                    value="<% if (editing || hasError) { %><%= book.title %><% } %>">
+            </div>
+
+            <div class="form-control">
+                <label for="image">Image</label>
+                <input 
+                    type="file" 
+                    name="image" 
+                    id="image" >
+            </div>
+            <div class="form-control">
+                <label for="price">Price</label>
+                <input 
+                    class="<%= validationErrors.find(e => e.param === 'price') ? 'invalid' : '' %>"
+                    type="number" 
+                    name="price" 
+                    id="price" 
+                    step="0.01" 
+                    
+                    value="<% if (editing || hasError) { %><%= book.price %><% } %>">
+            </div>
+            <div class="form-control">
+                    <label for="price">Category</label>
+                    <input 
+                        class="<%= validationErrors.find(e => e.param === 'category') ? 'invalid' : '' %>"
+                        type="text" 
+                        name="category" 
+                        id="category" 
+                        value="<% if (editing || hasError) { %><%= book.category %><% } %>">
+                </div>
+                <div class="form-control">
+                    <label for="price">Autor</label>
+                    <input 
+                        class="<%= validationErrors.find(e => e.param === 'autor') ? 'invalid' : '' %>"
+                        type="text" 
+                        name="autor" 
+                        id="autor" 
+                        value="<% if (editing || hasError) { %><%= book.autor %><% } %>">
+                </div>
+            <div class="form-control">
+                <label for="description">Description</label>
+                <textarea 
+                    class="<%= validationErrors.find(e => e.param === 'description') ? 'invalid' : '' %>"
+                    name="description" 
+                    id="description" 
+                    rows="5"><% if (editing || hasError) { %><%= book.description %><% } %></textarea>
+            </div>
+            <% if (editing) { %>
+                <input type="hidden" value="<%= book._id %>" name="bookId">
+            <% } %>
+
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <button class="btn" type="submit"><% if (editing) { %>Update Book<% } else { %>Add Book<% } %></button>
+        </form>
+    </main>
+<%- include('../partials/end.ejs') %>
