@@ -60,7 +60,7 @@ app.use(flash());
 
 app.use(
   session({
-    secret: process.env.MYSECRET,
+    secret: "process.env.MYSECRET",
     resave: false,
     saveUninitialized: false,
     store: store

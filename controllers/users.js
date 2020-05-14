@@ -90,6 +90,7 @@ router.post('/CartRemove', (req,res, next) => {
     })
 })
 
+
 router.post("/settings", (req, res, next) => {
     const update = {email: req.body.email}
     User.findByIdAndUpdate(req.user._id, update).then(result => {

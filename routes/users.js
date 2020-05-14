@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require("../models/user");
+const Book = require('../models/book');
 
 router.get("/signup", (req, res) => {
     res.render("users/signup",  {path: 'users/signup'});
@@ -28,10 +29,18 @@ router.get("/admin-register", (req, res) => {
 router.get("/cart", (req, res, next) => {
     req.user.populate('cart.items.bookId').execPopulate().then(user => {
         const books = user.cart.items;
+        const updatedBooks = [];
+        books.forEach(bookId => {
+                if(bookId.bookId === null) {
+        user.removeFromCart(bookId._id);
+                } else {
+                    updatedBooks.push(bookId);
+                }
+        })
         res.render('users/cart', {
             path: '/cart',
             pageTitle: 'Vaša košarica',
-            books: books
+            books: updatedBooks
         });
     }).catch(err => {
         const error = new Error(err);

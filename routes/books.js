@@ -82,7 +82,6 @@ router.get("/edit-book/:id", (req, res, next) => {
     return res.redirect('/');
   }
   const bookId = req.params.id;
-  console.log(bookId);
   Book.findById(bookId).then(book => {
     if(!book) {
       return res.redirect('/books');
@@ -105,7 +104,6 @@ router.get("/edit-book/:id", (req, res, next) => {
 
 router.get('/delete-book/:id', (req,res, next) => {
   const bookId = req.params.id;
-  console.log("book id found: " + req.params.id);
   Book.findById(bookId).then(book => {
     if(!book) {
       return next(new Error('Book not found'));
