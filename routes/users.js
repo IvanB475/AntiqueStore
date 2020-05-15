@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require("../models/user");
 const Book = require('../models/book');
+require('../middleware/index')();
 
 router.get("/signup", (req, res) => {
     res.render("users/signup",  {path: 'users/signup'});
@@ -21,12 +22,12 @@ router.get("/settings", (req,res) => {
     })
 });
 
-router.get("/admin-register", (req, res) => {
+router.get("/admin-register", isAdmin, (req, res) => {
     res.render("users/admin-register", {path: 'users/admin-register'})
 });
 
 
-router.get("/cart", (req, res, next) => {
+router.get("/cart", isUser, (req, res, next) => {
     req.user.populate('cart.items.bookId').execPopulate().then(user => {
         const books = user.cart.items;
         const updatedBooks = [];
