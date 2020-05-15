@@ -12,7 +12,7 @@ router.get("/login", (req, res) => {
     res.render("users/login",  {path: 'users/login'});
 })
 
-router.get("/settings", (req,res) => {
+router.get("/settings", isUser, (req,res) => {
     User.findById(req.user._id, (err, foundUser) => {
         if(err) {
             return res.redirect("/");
@@ -22,7 +22,7 @@ router.get("/settings", (req,res) => {
     })
 });
 
-router.get("/admin-register", isAdmin, (req, res) => {
+router.get("/admin-register", isUser, (req, res) => {
     res.render("users/admin-register", {path: 'users/admin-register'})
 });
 
@@ -50,7 +50,7 @@ router.get("/cart", isUser, (req, res, next) => {
     })
 });
 
-router.get("/checkout", (req,res, next) => {
+router.get("/checkout", isUser, (req,res, next) => {
     req.user.populate('cart.items.bookId').execPopulate().then(user => {
         const books = user.cart.items;
         let totalPrice = 0;

@@ -3,6 +3,7 @@ const router = express.Router();
 const Book = require('../models/book');
 const fileHelper = require('../util/file');
 const eBook = require('../models/eBook');
+require('../middleware/index')();
 
 const ITEMS_PER_PAGE = 4;
 
@@ -47,7 +48,7 @@ router.get("/books", (req,res,next) => {
 }
 });
 
-router.get("/add-book", (req, res) =>{
+router.get("/add-book", isAdmin, (req, res) =>{
     res.render("books/add-book", {
         path: '/add-book',
         editing: false,
@@ -76,7 +77,7 @@ router.get("/books/:id", (req, res) => {
 })
 
 
-router.get("/edit-book/:id", (req, res, next) => {
+router.get("/edit-book/:id", isAdmin, (req, res, next) => {
   const editMode = req.query.edit;
   if(!editMode) {
     return res.redirect('/');
@@ -102,7 +103,7 @@ router.get("/edit-book/:id", (req, res, next) => {
   })
 })
 
-router.get('/delete-book/:id', (req,res, next) => {
+router.get('/delete-book/:id', isAdmin, (req,res, next) => {
   const bookId = req.params.id;
   Book.findById(bookId).then(book => {
     if(!book) {

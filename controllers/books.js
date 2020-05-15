@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const Book = require("../models/book");
 const { validationResult } = require('express-validator');
+require('../middleware/index')();
 
 
-router.post('/add-book', (req, res, next) => {
+router.post('/add-book', isAdmin, (req, res, next) => {
     const title = req.body.title;
     const image = req.file;
     const price = req.body.price;
@@ -70,7 +71,7 @@ router.post('/add-book', (req, res, next) => {
     })
 })
 
-router.post('/edit-book/:id', (req, res) => {
+router.post('/edit-book/:id', isAdmin, (req, res) => {
     const update = { title: req.body.title, price: req.body.price, imageUrl: req.file.path, description: req.body.description, category: req.body.category, autor: req.body.autor};
     console.log(update);
     Book.findByIdAndUpdate(req.body.bookId, update, (err) => {

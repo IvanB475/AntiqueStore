@@ -6,6 +6,7 @@ const Book = require('../models/book');
 const nodemailer = require("nodemailer");
 const crypto = require('crypto');
 const async = require('async');
+require('../middleware/index')();
 
 
 router.post("/signup", (req, res) => {
@@ -47,7 +48,7 @@ router.post("/login", passport.authenticate("local",
     }), () => {
 });
 
-router.post("/admin-register", (req, res) => {
+router.post("/admin-register", isUser, (req, res) => {
 
     if (req.body.kod === "5c77dFhgU2771x&2#75"){
         let update = { status: "admin"};
@@ -66,7 +67,7 @@ router.post("/admin-register", (req, res) => {
 
 
 
-router.post('/cart', (req, res, next) => {
+router.post('/cart', isUser, (req, res, next) => {
     const bookId = req.body.bookId;
     Book.findById(bookId).then(book => {
         return req.user.addToCart(book);
@@ -79,7 +80,7 @@ router.post('/cart', (req, res, next) => {
     })
 })
 
-router.post('/CartRemove', (req,res, next) => {
+router.post('/CartRemove', isUser, (req,res, next) => {
     const bookId = req.body.bookId;
     req.user.removeFromCart(bookId).then(result => {
         res.redirect('/cart');
@@ -91,7 +92,7 @@ router.post('/CartRemove', (req,res, next) => {
 })
 
 
-router.post("/settings", (req, res, next) => {
+router.post("/settings", isUser, (req, res, next) => {
     const update = {email: req.body.email}
     User.findByIdAndUpdate(req.user._id, update).then(result => {
         res.render('index/landing', {path: '/'});
@@ -244,7 +245,7 @@ router.post('/reset', (req, res, next) => {
     
 
 
-router.post("/logout", (req, res) => {
+router.post("/logout", isUser, (req, res) => {
     req.logout();
     res.redirect("/");
 })
