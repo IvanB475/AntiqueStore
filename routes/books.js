@@ -33,6 +33,7 @@ router.get("/books", (req,res,next) => {
     .countDocuments()
     .then(numBooks => {
       totalItems = numBooks;
+      console.log(numBooks);
       return Book.find()
         .skip((page - 1) * ITEMS_PER_PAGE)
         .limit(ITEMS_PER_PAGE);
@@ -132,8 +133,8 @@ router.get("/eBooks", (req,res,next) => {
  if(req.query.sort){
   const regex = new RegExp(escapeRegex(req.query.sort), 'gi');
   eBook.find({"category": regex }, (err, allBooks) => {
-    if(err){
-      console.log(err);
+    if(allBooks.length < 1) {
+      noMatch = "Search found no results";
     }
     res.render("books/eBooks", {
       noMatch: noMatch,
@@ -173,6 +174,7 @@ eBook.find()
   .countDocuments()
   .then(numBooks => {
     totalItems = numBooks;
+    console.log(numBooks);
     return eBook.find()
       .skip((page - 1) * ITEMS_PER_PAGE)
       .limit(ITEMS_PER_PAGE);
@@ -212,6 +214,16 @@ router.get("/books/eBook/:id", (req, res) => {
       })
     })
     }
+  })
+})
+
+router.get("/add-eBook", isAdmin, (req, res) =>{
+  res.render("books/add-eBook", {
+      path: '/add-eBook',
+      editing: false,
+      hasError: false,
+      errorMessage: null,
+      validationErrors: []
   })
 })
 

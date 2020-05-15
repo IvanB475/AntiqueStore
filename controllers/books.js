@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Book = require("../models/book");
+const eBook = require("../models/eBook");
 const { validationResult } = require('express-validator');
 require('../middleware/index')();
 
@@ -12,6 +13,7 @@ router.post('/add-book', isAdmin, (req, res, next) => {
     const category = req.body.category;
     const autor = req.body.autor;
     const description = req.body.description; 
+    const bookType = req.body.bookType;
     if(!image) {
         return res.status(422).render('books/add-book', {
             pageTitle: 'Dodaj knjigu',
@@ -50,7 +52,7 @@ router.post('/add-book', isAdmin, (req, res, next) => {
     }
 
     const imageUrl = image.path;
-
+    if(bookType === 'Book') { 
     const book = new Book({
         title: title,
         price: price,
@@ -69,6 +71,26 @@ router.post('/add-book', isAdmin, (req, res, next) => {
         error.httpStatusCode = 500;
         return next(error);
     })
+} else {
+    const book = new eBook({
+        title: title,
+        price: price,
+        description: description,
+        category: category,
+        autor: autor,
+        imageUrl: imageUrl,
+        userId: req.user
+    });
+    book.save().then(result => {
+        console.log('eBook added!');
+        res.redirect('/eBooks');
+
+    }).catch( err => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    })
+}
 })
 
 router.post('/edit-book/:id', isAdmin, (req, res) => {
@@ -82,6 +104,7 @@ router.post('/edit-book/:id', isAdmin, (req, res) => {
         }
     })
 })
+
 
 
 module.exports = router;
