@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require("../models/user");
 const passport = require('passport');
 const Book = require('../models/book');
+const eBook = require('../models/eBook');
 const nodemailer = require("nodemailer");
 const crypto = require('crypto');
 const async = require('async');
@@ -78,6 +79,19 @@ router.post('/cart', isUser, (req, res, next) => {
         error.httpStatusCode = 500;
         return next(error);
     })
+})
+
+router.post('/cart-eBook', isUser, (req, res, next) => {
+  const bookId = req.body.bookId;
+  eBook.findById(bookId).then(book => {
+      return req.user.addToCart(book);
+  }).then(result => {
+      res.redirect('/cart');
+  }).catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+  })
 })
 
 router.post('/CartRemove', isUser, (req,res, next) => {

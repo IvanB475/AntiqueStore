@@ -201,16 +201,17 @@ eBook.find()
 }
 });
 
-router.get("/books/eBook/:id", (req, res) => {
+router.get("/eBooks/:id", (req, res) => {
   eBook.findById(req.params.id).exec((err, foundBook) => {
     if(err) {
      console.log(err);
     } else {
-      eBook.find({category: foundBook.category}, (err) => {
+      eBook.find({category: foundBook.category}, (err, relatedBooks) => {
         console.log(relatedBooks);
-      res.render("books/eBook", {
+      res.render("books/eBook-detail", {
         path: '/books/eBook/:id',
-        book: foundBook
+        eBook: foundBook,
+        relatedBooks: relatedBooks
       })
     })
     }

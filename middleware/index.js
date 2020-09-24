@@ -1,11 +1,3 @@
-function isAdmin(req, res, next) {
-    if(req.user.status === "admin"){
-        return next;
-    }
-    else {
-        res.send("you're not authorized to make that request");
-    }
-}
 
 
 module.exports = function() {
