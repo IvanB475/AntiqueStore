@@ -72,11 +72,7 @@ router.get("/checkout", isUser, (req,res, next) => {
 
 
 router.get('/reset', (req, res, next) => {
-    res.render('users/reset', {
-        path: '/reset',
-        pageTitle: 'Reset Password',
-        errorMessage: 'something went wrong'
-    });
+    res.render('users/reset', { path: 'users/reset', errorMessage: null});
 })
 
 

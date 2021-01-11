@@ -108,13 +108,13 @@ app.use((req, res, next) => {
 });
 
 
-app.use(indexRoutes);
-app.use(usersRoutes);
+app.use([indexRoutes, usersRoutes, booksRoutes, usersControllers, booksControllers]);
+/* app.use(usersRoutes);
 app.use(booksRoutes);
 
 
 app.use(usersControllers);
-app.use(booksControllers);
+app.use(booksControllers); */
 
 
 
