@@ -11,16 +11,23 @@ const multer = require('multer');
 const uuidv4 = require('uuid/v4');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+const fs = require('fs');
 
 
 const User = require('./models/user');
 
-const indexRoutes = require("./routes/index");
-const usersRoutes = require("./routes/users");
-const booksRoutes = require("./routes/books");
 
 const usersControllers = require("./controllers/users");
 const booksControllers = require('./controllers/books');
+
+
+
+fs.readdir('routes', (err, files) => {
+  files.forEach(file => {
+    const route = require("./routes/" + file);
+    app.use(route);
+  })
+});
 
 const MONGODB_URI =
   'mongodb://localhost:27017/shoptest';
@@ -108,13 +115,7 @@ app.use((req, res, next) => {
 });
 
 
-app.use([indexRoutes, usersRoutes, booksRoutes, usersControllers, booksControllers]);
-/* app.use(usersRoutes);
-app.use(booksRoutes);
-
-
-app.use(usersControllers);
-app.use(booksControllers); */
+app.use([ usersControllers, booksControllers]);
 
 
 
