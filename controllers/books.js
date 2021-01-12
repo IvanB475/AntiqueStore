@@ -1,12 +1,21 @@
-const express = require('express');
-const router = express.Router();
 const Book = require("../models/book");
 const eBook = require("../models/eBook");
 const { validationResult } = require('express-validator');
-require('../middleware/index')();
 
 
-router.post('/add-book', isAdmin, (req, res, next) => {
+
+exports.getAddBook = async (req, res) => {
+    res.render("books/add-book", {
+        path: '/add-book',
+        editing: false,
+        hasError: false,
+        errorMessage: null,
+        validationErrors: []
+    })
+};
+
+exports.addBook = async (req, res, next) => {
+    console.log("entered here");
     const title = req.body.title;
     const image = req.file;
     const price = req.body.price;
@@ -15,7 +24,7 @@ router.post('/add-book', isAdmin, (req, res, next) => {
     const description = req.body.description; 
     const bookType = req.body.bookType;
     if(!image) {
-        return res.status(422).render('books/add-book', {
+        return res.render('books/add-book', {
             pageTitle: 'Dodaj knjigu',
             path: '/add-book',
             editing: false,
@@ -91,9 +100,11 @@ router.post('/add-book', isAdmin, (req, res, next) => {
         return next(error);
     })
 }
-})
+}
 
-router.post('/edit-book/:id', isAdmin, (req, res) => {
+
+
+exports.editBook = async (req, res) => {
     const update = { title: req.body.title, price: req.body.price, imageUrl: req.file.path, description: req.body.description, category: req.body.category, autor: req.body.autor};
     console.log(update);
     Book.findByIdAndUpdate(req.body.bookId, update, (err) => {
@@ -103,8 +114,6 @@ router.post('/edit-book/:id', isAdmin, (req, res) => {
             res.redirect('/books');
         }
     })
-})
+}
 
 
-
-module.exports = router;

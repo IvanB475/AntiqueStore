@@ -4,6 +4,7 @@ const Book = require('../models/book');
 const fileHelper = require('../util/file');
 const eBook = require('../models/eBook');
 require('../middleware/index')();
+const bookController = require('../controllers/books');
 
 const ITEMS_PER_PAGE = 4;
 
@@ -49,15 +50,11 @@ router.get("/books", (req,res,next) => {
 }
 });
 
-router.get("/add-book", isAdmin, (req, res) =>{
-    res.render("books/add-book", {
-        path: '/add-book',
-        editing: false,
-        hasError: false,
-        errorMessage: null,
-        validationErrors: []
-    })
-})
+router.get("/add-book", isAdmin, bookController.getAddBook);
+
+router.post('/add-book', isAdmin, bookController.addBook);
+
+router.post('/edit-book/:id', isAdmin, bookController.editBook);
 
 
 router.get("/books/:id", (req, res) => {
@@ -226,7 +223,8 @@ router.get("/add-eBook", isAdmin, (req, res) =>{
       errorMessage: null,
       validationErrors: []
   })
-})
+});
+
 
 
 function Render(res, noMatch, allBooks, page, totalItems)  {

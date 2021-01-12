@@ -18,7 +18,6 @@ const User = require('./models/user');
 
 
 const usersControllers = require("./controllers/users");
-const booksControllers = require('./controllers/books');
 
 
 
@@ -115,7 +114,7 @@ app.use((req, res, next) => {
 });
 
 
-app.use([ usersControllers, booksControllers]);
+app.use(usersControllers);
 
 
 
