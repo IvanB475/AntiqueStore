@@ -16,7 +16,6 @@ exports.getAddBook = async (req, res) => {
 };
 
 exports.addBook = (req, res, next) => {
-    console.log("entered here");
     const title = req.body.title;
     const image = req.file;
     const price = req.body.price;
@@ -134,18 +133,7 @@ exports.getBooks = (req,res,next) => {
         .limit(ITEMS_PER_PAGE);
     }) 
     .then(allBooks => {
-        res.render("books/books", {
-            noMatch: noMatch,
-            prods: allBooks,
-            pageTitle: 'Books',
-            path: '/books',
-            currentPage: page,
-            hasNextPage: ITEMS_PER_PAGE * page < totalItems,
-            hasPreviousPage: page > 1,
-            nextPage: page + 1,
-            previousPage: page - 1,
-            lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE)
-          })
+      utils.renderView(res, noMatch, allBooks, page, totalItems);
     })
     .catch(err => {
       const error = new Error(err);
