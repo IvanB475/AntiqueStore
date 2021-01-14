@@ -114,7 +114,7 @@ app.use((req, res, next) => {
 });
 
 
-app.use(usersControllers);
+// app.use(usersControllers);
 
 
 

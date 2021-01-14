@@ -5,7 +5,6 @@ const bookController = require('../controllers/books');
 
 
 
-
 router.get("/books", bookController.getBooks)
       .get("/books/:id", bookController.getBook)
       .get("/add-book", isAdmin, bookController.getAddBook)
@@ -15,13 +14,6 @@ router.get("/books", bookController.getBooks)
 
 router.post('/add-book', isAdmin, bookController.addBook)
       .post('/edit-book/:id', isAdmin, bookController.editBook); 
-
-
-
-
-
-
-
 
 
 
