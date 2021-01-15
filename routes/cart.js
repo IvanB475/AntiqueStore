@@ -10,7 +10,6 @@ router.get("/cart", isUser, cartController.getCart)
 
 
 router.post('/cart', isUser, cartController.postCart)
-      .post('/cart-eBook', isUser, cartController.postCartEBook)
       .post('/CartRemove', isUser, cartController.postCartRemove);
 
 

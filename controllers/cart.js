@@ -1,14 +1,15 @@
 const Book = require('../models/book');
 const eBook = require('../models/eBook');
-
+const mongoose = require('mongoose');
 
 
 
 
 exports.postCart = (req, res, next) => {
     const bookId = req.body.bookId;
-    Book.findById(bookId).then(book => {
-        return req.user.addToCart(book);
+    const bookType = req.body.bookType;
+        mongoose.model(bookType).findById(bookId).then(book => {
+        return req.user.addToCart(book, bookType);
     }).then(result => {
         res.redirect('/cart');
     }).catch(err => {
@@ -18,18 +19,6 @@ exports.postCart = (req, res, next) => {
     })
   };
   
-  exports.postCartEBook = (req, res, next) => {
-    const bookId = req.body.bookId;
-    eBook.findById(bookId).then(book => {
-        return req.user.addToCart(book);
-    }).then(result => {
-        res.redirect('/cart');
-    }).catch(err => {
-        const error = new Error(err);
-        error.httpStatusCode = 500;
-        return next(error);
-    })
-  };
   
   exports.postCartRemove = (req,res, next) => {
     const bookId = req.body.bookId;

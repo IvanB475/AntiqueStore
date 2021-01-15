@@ -20,11 +20,10 @@ const UserSchema = new Schema ({
           {
             bookId: {
               type: Schema.Types.ObjectId,
-              // fix refPath or figure out how to make ref work for both book and eBook, fall back option is to delete eBook model and sort both books and ebooks within book model. 
-              refPath: 'onModel',
+              refPath: 'cart.items.bookIdModel',
               required: true
             },
-            onModel: {
+            bookIdModel: {
                 type: String,
                 required: true,
                 enum: ['Book', 'eBook']
@@ -37,7 +36,7 @@ const UserSchema = new Schema ({
 
 UserSchema.plugin(passportLocalMongoose);
 
-UserSchema.methods.addToCart = function(book) {
+UserSchema.methods.addToCart = function(book, bookType) {
     console.log(book._id);
     const cartBookIndex = this.cart.items.findIndex(cp => {
         return cp.bookId.toString() === book._id.toString();
@@ -52,7 +51,8 @@ UserSchema.methods.addToCart = function(book) {
     } else {
         updatedCartItems.push({
             bookId: book._id,
-            quantity: newQuantity
+            quantity: newQuantity,
+            bookIdModel: bookType
         })
     }
 
