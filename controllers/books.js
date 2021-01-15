@@ -24,40 +24,13 @@ exports.addBook = (req, res, next) => {
     const description = req.body.description; 
     const bookType = req.body.bookType;
     if(!image) {
-        return res.render('books/add-book', {
-            pageTitle: 'Dodaj knjigu',
-            path: '/add-book',
-            editing: false,
-            hasError: true,
-            book: {
-                title: title,
-                price: price,
-                description: description,
-                autor: autor,
-                category: category
-            },
-            errorMessage: 'Attached file is not an image.',
-            validationErrors:  []
-        });
+        return utils.renderError(res, title, price, description, autor, category);
     }
 
     const errors = validationResult(req);
 
     if(!errors.isEmpty()){
-        return res.render('books/add-book', {
-            pageTitle: 'Dodaj knjigu',
-            path: '/add-book',
-            editing: false,
-            hasError: true,
-            book: {
-                title: title,
-                price: price,
-                category: category,
-                autor: autor,
-                description: description
-            }, errorMessage: errors.array()[0].msg,
-            validationErrors: errors.array()
-        })
+      return utils.renderError(res, title, price, description, autor, category);
     }
 
     const imageUrl = image.path;

@@ -22,6 +22,24 @@ exports.renderView = (res, noMatch, allBooks, page, totalItems) => {
           previousPage: page - 1,
           lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE)
         })
+};
+
+exports.renderError = (res, title, price, description, autor, category) => {
+    res.render('books/add-book', {
+    pageTitle: 'Dodaj knjigu',
+    path: '/add-book',
+    editing: false,
+    hasError: true,
+    book: {
+        title: title,
+        price: price,
+        description: description,
+        autor: autor,
+        category: category
+    },
+    errorMessage: 'Error has occured, please make sure to fill in all required fields and upload image.',
+    validationErrors:  []
+});
 }
 
 exports.escapeRegex = (text) => {
