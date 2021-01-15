@@ -42,6 +42,23 @@ exports.renderError = (res, title, price, description, autor, category) => {
 });
 }
 
+
+exports.renderEBooks =  (res, noMatch, allBooks, page, totalItems) => {
+    res.render("books/eBooks", {
+    noMatch: noMatch,
+    prods: allBooks,
+    pageTitle: 'eBooks',
+    path: '/eBooks',
+    currentPage: page,
+    hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+    hasPreviousPage: page > 1,
+    nextPage: page + 1,
+    previousPage: page - 1,
+    lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE)
+  })
+}
+
+
 exports.escapeRegex = (text) => {
     return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
   };

@@ -1,5 +1,6 @@
 const eBook = require("../models/eBook");
 const ITEMS_PER_PAGE = 4;
+const utils = require('../util/helper');
 
 exports.getEBooks = (req,res,next) => {
     const page = +req.query.page || 1;
@@ -11,18 +12,7 @@ exports.getEBooks = (req,res,next) => {
       if(allBooks.length < 1) {
         noMatch = "Search found no results";
       }
-      res.render("books/eBooks", {
-        noMatch: noMatch,
-        prods: allBooks,
-        pageTitle: 'eBooks',
-        path: '/eBooks',
-        currentPage: page,
-        hasNextPage: ITEMS_PER_PAGE * page < totalItems,
-        hasPreviousPage: page > 1,
-        nextPage: page + 1,
-        previousPage: page - 1,
-        lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE)
-      })
+      utils.renderEBooks(res, noMatch, allBooks, page, totalItems);
     }) 
    }
    if(req.query.search) {
@@ -31,18 +21,7 @@ exports.getEBooks = (req,res,next) => {
     if(allBooks.length < 1) {
       noMatch = "Search found no results";
     } 
-    res.render("books/eBooks", {
-      noMatch: noMatch,
-      prods: allBooks,
-      pageTitle: 'eBooks',
-      path: '/eBooks',
-      currentPage: page,
-      hasNextPage: ITEMS_PER_PAGE * page < totalItems,
-      hasPreviousPage: page > 1,
-      nextPage: page + 1,
-      previousPage: page - 1,
-      lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE)
-    })
+    utils.renderEBooks(res, noMatch, allBooks, page, totalItems);
   }) 
   } else {
   eBook.find()
@@ -55,18 +34,7 @@ exports.getEBooks = (req,res,next) => {
         .limit(ITEMS_PER_PAGE);
     }) 
     .then(allBooks => {
-        res.render("books/eBooks", {
-          noMatch: noMatch,
-          prods: allBooks,
-          pageTitle: 'eBooks',
-          path: '/eBooks',
-          currentPage: page,
-          hasNextPage: ITEMS_PER_PAGE * page < totalItems,
-          hasPreviousPage: page > 1,
-          nextPage: page + 1,
-          previousPage: page - 1,
-          lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE)
-        })
+      utils.renderEBooks(res, noMatch, allBooks, page, totalItems);
     })
     .catch(err => {
       const error = new Error(err);
