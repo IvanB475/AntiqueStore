@@ -6,7 +6,6 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const csrf = require('csurf');
-const flash = require('connect-flash');
 const multer = require('multer');
 const uuidv4 = require('uuid/v4');
 const passport = require('passport');
@@ -15,9 +14,6 @@ const fs = require('fs');
 
 
 const User = require('./models/user');
-
-
-const usersControllers = require("./controllers/users");
 
 
 
@@ -62,7 +58,6 @@ const fileFilter = (req, file, cb) => {
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
-app.use(flash());
 
 app.use(
   session({
@@ -88,7 +83,6 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(csrfProtection);
 
 app.use((req, res, next) => {
-  // throw new Error('Sync Dummy');
   if (!req.session.user) {
     return next();
   }
@@ -112,9 +106,6 @@ app.use((req, res, next) => {
   res.locals.csrfToken = req.csrfToken();
   next();
 });
-
-
-// app.use(usersControllers);
 
 
 
