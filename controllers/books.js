@@ -22,7 +22,7 @@ exports.addBook = (req, res, next) => {
     const category = req.body.category;
     const autor = req.body.autor;
     const description = req.body.description; 
-    const bookType = req.body.bookType;
+    const bookType = req.body.bookType === 'Book' ? 'Book' : 'eBook';
     if(!image) {
         return utils.renderError(res, title, price, description, autor, category);
     }
@@ -159,9 +159,8 @@ exports.getEditBook = (req, res, next) => {
     })
   };
 
-exports.editBook = async (req, res) => {
+exports.editBook = (req, res) => {
     const update = { title: req.body.title, price: req.body.price, imageUrl: req.file.path, description: req.body.description, category: req.body.category, autor: req.body.autor};
-    console.log(update);
     Book.findByIdAndUpdate(req.body.bookId, update, (err) => {
         if(err) {
             res.redirect("/");
