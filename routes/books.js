@@ -13,7 +13,7 @@ router.get("/books", bookController.getBooks)
 
 
 router.post('/add-book', isAdmin, bookController.addBook)
-      .post('/edit-book/:id', isAdmin, bookController.editBook); 
+      .post('/edit-book/:id', isAdmin, bookController.editBook);
 
 
 

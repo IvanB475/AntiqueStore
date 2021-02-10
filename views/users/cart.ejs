@@ -1,6 +1,8 @@
 <%- include('../partials/header.ejs') %>
-    <link rel="stylesheet" href="/css/cart.css">
-    </head>
+<link rel="stylesheet" href="/css/cart.css">
+<script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
+<script src="https://js.stripe.com/v3/"></script>
+</head>
 
     <body>
         <%- include('../partials/navigation.ejs') %>
@@ -16,7 +18,7 @@
                             <h5>Cijena: <%= currentPrice %> kn</h5>
                             <form action="/CartRemove" method="POST">
                                 <input type="hidden" value="<%= b.bookId._id %>" name="bookId">
-                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                <input type="hidden" id="token" name="_csrf" value="<%= csrfToken %>">
                                 <button class="btn danger" type="submit">Ukloni iz košarice</button>
                             </form>
                         </li>
@@ -25,16 +27,13 @@
                 </ul>
                 <hr>
                 <div class="centered">
-                    <!--<form action="/create-order" method="POST">
-                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        <button type="submit" class="btn">Order Now!</button>
-                    </form>-->
-                    <h5>Ukupna cijena: <%= totalPrice %> kn</h5>
-                    <a class="btn" href="/checkout">Kupi!</a>
+                        <h5>Ukupna cijena: <span id="totalPrice"><%= totalPrice %></span> kn</h5>
+                        <button id="checkout-button" class="btn">Kupi sada!</button>
                 </div>
                 
             <% } else { %>
                 <h1>Nemate ništa u košarici!</h1>
             <% } %>
         </main>
+        <script src="/js/checkoutSession.js"></script>
         <%- include('../partials/end.ejs') %>

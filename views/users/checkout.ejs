@@ -19,14 +19,16 @@
                             </div>
                             <div class="centered">
                                     <form action="/create-order" method="POST">
+                                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                                         <script
                                           src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                                           data-key="pk_test_QcCGsaTfvNkLZWP1vhP1U33r00dIq6i6By"
                                           data-amount="<%= totalPrice * 100 %>"
-                                          data-name="Your Order"
-                                          data-description="Sve knjige koje ste naručili"
+                                          data-name="Vaša narudžba"
+                                          data-description="Unesite vaše podatke"
                                           data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
                                           data-locale="auto"
+                                          data-label="Kupi"
                                           data-currency="hrk">
                                         </script>
                                       </form>

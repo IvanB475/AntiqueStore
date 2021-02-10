@@ -1,6 +1,7 @@
 const Book = require('../models/book');
 const eBook = require('../models/eBook');
 const mongoose = require('mongoose');
+const stripe = require('stripe')('sk_test_51IInAVDeWinF5kKHh4OIdKGq3MI4X5SRjgiD4L5Sux8KC6CywbvSPGkShPovnsjqCazeRGNXEJDpTVMZNyooDerr00MqorXtYw');
 
 
 
@@ -72,4 +73,29 @@ exports.postCart = (req, res, next) => {
         error.httpStatusCode = 500;
         return next(error);
     })
+  }
+
+  exports.createCheckoutSession = async (req, res) => {
+    const DOMAIN = 'http://localhost:5000';
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: [
+        {
+          price_data: {
+            currency: 'hrk',
+            product_data: {
+              name: 'Vaša narudžba',
+              images: ['https://st2.depositphotos.com/1105977/5461/i/600/depositphotos_54615585-stock-photo-old-books-on-wooden-table.jpg'],
+            },
+            unit_amount: req.body.totalPrice * 100,
+          },
+          quantity: 1,
+        },
+      ],
+      mode: 'payment',
+      success_url: `${DOMAIN}/books`,
+      cancel_url: `${DOMAIN}/eBook`,
+    });
+
+    res.json({ id: session.id });
   }
