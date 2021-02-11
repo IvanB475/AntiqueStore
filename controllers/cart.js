@@ -1,7 +1,7 @@
 const Book = require('../models/book');
 const eBook = require('../models/eBook');
 const mongoose = require('mongoose');
-const stripe = require('stripe')('sk_test_51IInAVDeWinF5kKHh4OIdKGq3MI4X5SRjgiD4L5Sux8KC6CywbvSPGkShPovnsjqCazeRGNXEJDpTVMZNyooDerr00MqorXtYw');
+const stripe = require('stripe')(process.env.stripe);
 
 
 
