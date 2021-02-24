@@ -7,6 +7,7 @@ require('../middleware/index')();
 
 
 exports.postSignUp = (req, res) => {
+  req.body.username = req.body.username.toLowerCase();
   const newUser = new User({username: req.body.username, email: req.body.email, status: "member", cart: { items: [] }});
   User.register(newUser, req.body.password, (err, user) => {
       if(err){
@@ -49,7 +50,7 @@ exports.postLogin =
 
 exports.postAdminRegister = (req, res) => {
 
-    if (req.body.kod === "5c77dFhgU2771x&2#75"){
+    if (req.body.kod === process.env.ADMIN_CODE){
         let update = { status: "admin"};
     User.findByIdAndUpdate(req.user._id, update, (err) => {
         if(err) {
@@ -181,7 +182,7 @@ exports.postResetToken = (req, res) => {
       });
       var mailOptions = {
         to: user.email,
-        from: 'rubotester@gmail.com',
+        from: process.env.GMAILUSER,
         subject: 'Your password has been changed',
         text: 'Hello,\n\n' +
           'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'

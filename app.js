@@ -11,10 +11,16 @@ const uuidv4 = require('uuid/v4');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const fs = require('fs');
+const result = require('dotenv').config();
 
+if (result.error) {
+  throw result.error
+}
+ 
+console.log(result.parsed);
 
 const User = require('./models/user');
-
+const PORT = process.env.PORT || 5000;
 
 
 fs.readdir('routes', (err, files) => {
@@ -24,8 +30,7 @@ fs.readdir('routes', (err, files) => {
   })
 });
 
-const MONGODB_URI =
-  'mongodb://localhost:27017/shoptest';
+const MONGODB_URI = process.env.MONGODB_URI;
 mongoose.set('useFindAndModify', false);
 const app = express();
 const store = new MongoDBStore({
@@ -61,7 +66,7 @@ app.set('views', 'views');
 
 app.use(
   session({
-    secret: "process.env.MYSECRET",
+    secret: process.env.EXPRESS_SECRET,
     resave: false,
     saveUninitialized: false,
     store: store
@@ -112,7 +117,7 @@ app.use((req, res, next) => {
 mongoose
   .connect(MONGODB_URI, {useNewUrlParser: true})
   .then(result => {
-    app.listen(5000);
+    app.listen(PORT);
     console.log("app started");
   })
   .catch(err => {

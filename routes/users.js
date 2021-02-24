@@ -11,7 +11,7 @@ router.get("/signup", userController.getSignUp)
       .get('/reset/:token', userController.getResetToken);
 
 router.post("/signup", userController.postSignUp)
-      .post("/login", userController.postLogin)
+      .post("/login", toLowerCase, userController.postLogin)
       .post("/admin-register", isUser, userController.postAdminRegister)
       .post("/settings", isUser, userController.postSettings)
       .post('/reset', userController.postReset)
