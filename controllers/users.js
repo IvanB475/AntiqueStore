@@ -33,7 +33,7 @@ exports.postSignUp = (req, res) => {
               });
             }
           passport.authenticate("local")(req,res, () => {
-              res.render("index/landing", { path: "index/landing"});
+              res.redirect("/books");
           })
       
   })
@@ -42,7 +42,7 @@ exports.postSignUp = (req, res) => {
 exports.postLogin = 
   passport.authenticate("local", 
 {
-    successRedirect: "/settings",
+    successRedirect: "/books",
     failureRedirect: "/login"
 }), () => {
 }
@@ -78,6 +78,7 @@ exports.postSettings = (req, res, next) => {
 }
 
 
+// Code from: http://sahatyalkabov.com/how-to-implement-password-reset-in-nodejs/
 exports.postReset = (req, res, next) => {
     async.waterfall([
         function(done) {

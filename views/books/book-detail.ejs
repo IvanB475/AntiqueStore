@@ -1,4 +1,5 @@
 <%- include('../partials/header.ejs') %>
+    <link rel="stylesheet" href="/css/product.css">
     </head>
 
 
@@ -13,13 +14,21 @@
             <h2><%= book.price %> kn</h2>
             <p><%= book.description %></p>
             <% if (currentUser) { %>
+                                    <form action="/cart" method="post">
+                                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                        <input type="hidden" name="bookId" value="<%= book._id %>">
+                                        <input type="hidden" name="bookType" value="Book">
+                                        <button class="btn btn-lg" type="submit">Dodaj u košaricu</button>
+                                    </form>
+                                    <% } %>
+            <% if (currentUser) { %>
             <%if (currentUser.status === "admin") { %> 
                 <div class="card__actions">
                     <a href="/edit-book/<%= book._id %>?edit=true" class="btn">Edit</a>
                     <input type="hidden" value="<%= book._id %>" name="bookId">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     <form class="product-form" action="/delete-book/<%= book._id %>" method="GET" enctype="multipart/form-data">
-                        <button class="btn">Delete</button>
+                        <button class="btn">Obriši</button>
                     </form>
                 </div>
             <% } %>
@@ -28,7 +37,7 @@
                 </div>
                <main>
                     <% if (relatedBooks.length > 1) { %>
-                   <h2 class="centered"> Related products </h2>
+                   <h2 class="centered related-products"> Slične knjige </h2>
                        <div class="grid">
                            <% for (let rb of relatedBooks) { %>
                             <% if(rb.title != book.title) {%>
@@ -46,11 +55,11 @@
                                            <%= rb.price %> kn
                                        </h2>
                                        <p class="product__description">
-                                           <%= rb.description %>
+                                           <%= rb.autor %>
                                        </p>
                                    </div>
                                    <div class="card__actions">
-                                       <a href="/books/<%= rb._id %>" class="btn">Details</a>
+                                       <a href="/books/<%= rb._id %>" class="btn">Više</a>
                                        </div>
                                       
                                </article>

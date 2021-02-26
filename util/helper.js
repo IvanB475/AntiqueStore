@@ -8,7 +8,7 @@ exports.deleteFile = (filePath) => {
     });
 }
 
-const ITEMS_PER_PAGE = 4;
+const ITEMS_PER_PAGE = 8;
 exports.renderView = (res, noMatch, allBooks, page, totalItems) => {
         res.render("books/books", {
           noMatch: noMatch,

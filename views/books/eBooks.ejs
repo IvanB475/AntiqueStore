@@ -40,17 +40,17 @@
                                         <%= book.price %> kn
                                     </h2>
                                     <p class="product__description">
-                                        <%= book.description %>
+                                        <%= book.autor %>
                                     </p>
                                 </div>
                                 <div class="card__actions">
-                                    <a href="/eBooks/<%= book._id %>" class="btn">Details</a>
+                                    <a href="/eBooks/<%= book._id %>" class="btn">Više</a>
                                     <% if (currentUser) { %>
                                     <form action="/cart" method="post">
                                         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                                         <input type="hidden" name="bookId" value="<%= book._id %>">
                                         <input type="hidden" name="bookType" value="eBook">
-                                        <button class="btn" type="submit">Add to Cart</button>
+                                        <button class="btn" type="submit">Dodaj u košaricu</button>
                                     </form>
                                     <% } %>
                                     </div>

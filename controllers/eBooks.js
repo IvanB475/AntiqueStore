@@ -1,5 +1,5 @@
 const eBook = require("../models/eBook");
-const ITEMS_PER_PAGE = 4;
+const ITEMS_PER_PAGE = 8;
 const utils = require('../util/helper');
 
 exports.getEBooks = (req,res,next) => {

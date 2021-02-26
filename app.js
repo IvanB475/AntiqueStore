@@ -11,13 +11,8 @@ const uuidv4 = require('uuid/v4');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const fs = require('fs');
-const result = require('dotenv').config();
+require('dotenv').config();
 
-if (result.error) {
-  throw result.error
-}
- 
-console.log(result.parsed);
 
 const User = require('./models/user');
 const PORT = process.env.PORT || 5000;

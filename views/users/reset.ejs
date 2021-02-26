@@ -12,11 +12,11 @@
         <% } %>
         <form class="login-form" action="/reset" method="POST">
             <div class="form-control">
-                <label for="email">E-Mail</label>
+                <label for="email">Unesite vaš E-Mail</label>
                 <input type="email" name="email" id="email">
             </div>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-            <button class="btn" type="submit">Reset Password</button>
+            <button class="btn" type="submit">Zatraži novu lozinku</button>
         </form>
     </main>
 <%- include('../partials/end.ejs') %>

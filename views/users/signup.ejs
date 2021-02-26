@@ -4,14 +4,14 @@
 </head>
 <body>
         <%- include('../partials/navigation.ejs') %>
-<h1>Sign up</h1>
+<h1>Registracija</h1>
 
 <form action="/signup" method="POST">
     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
     <input type="text" name="username" placeholder="Korisnicko ime">
     <input type="password" name="password" pattern=".{6,}" placeholder="password">
     <input type="email" name="email" placeholder="email">
-    <button>Sign up</button>
+    <button>Registriraj se!</button>
 </form>
 
 
