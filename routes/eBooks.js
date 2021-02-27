@@ -7,6 +7,7 @@ const eBookController = require('../controllers/eBooks');
 router.get("/eBooks", eBookController.getEBooks)
       .get("/edit-eBook/:id", isAdmin, eBookController.getEditEBook)
       .get('/delete-eBook/:id', isAdmin, eBookController.deleteEBook)
+      .get('/eBook-list', isUser, eBookController.getEBookList)
       .get("/eBooks/:id", eBookController.getEBook);
   
 

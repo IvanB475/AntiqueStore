@@ -6,9 +6,9 @@
     <body>
         <%- include('../partials/navigation.ejs') %>
         <form action="/books" method="GET" class="form-inline">
-            <div class="form-group">
-                <input type="text" name="search" placeholder="Search" class="form-control">
-                <input type="submit" value="Search" class="btn btn-default">
+            <div class="search-bar">
+	            <input type="text" name="search" placeholder="Unesite knjigu koju tražite" />
+	            <button value="Search" class="btn btn-default">Pretraži!</button>
             </div>
             </form>
         <div class="col-md-12">
@@ -28,7 +28,7 @@
                                     </h1>
                                 </header>
                                 <div class="card__image">
-                                    <img src="/<%= book.imageUrl %>" alt="<%= book.title %>">
+                                    <a href="/books/<%= book._id %>"><img src="/<%= book.imageUrl %>" alt="<%= book.title %>"></a>
                                 </div>
                                 <div class="card__content">
                                     <h2 class="product__price">

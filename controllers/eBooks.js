@@ -115,3 +115,7 @@ exports.deleteEBook = (req,res, next) => {
       res.status(500).json({ message: "Brisanje nije uspjelo"});
     })
   }
+  
+exports.getEBookList = (req, res, next) => {
+  res.send("Coming soon");
+};
