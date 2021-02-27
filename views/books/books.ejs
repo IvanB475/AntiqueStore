@@ -1,15 +1,10 @@
 <%- include('../partials/header.ejs') %>
     <link rel="stylesheet" href="/css/product.css">
+    <link rel="stylesheet" href="/css/menu.css">
     </head>
 
     <body>
         <%- include('../partials/navigation.ejs') %>
-        <form action="/books" method="GET" class="form-inline">
-            <div class="form-group">
-                <input type="text" name="sort" placeholder="Sort" class="form-control">
-                <input type="submit" value="Sort" class="btn btn-default">
-            </div>
-            </form>
         <form action="/books" method="GET" class="form-inline">
             <div class="form-group">
                 <input type="text" name="search" placeholder="Search" class="form-control">
@@ -22,6 +17,7 @@
                  <% } %>
              </div>
             <main>
+                <%- include('../partials/menu.ejs') %>
                 <% if (prods.length > 0) { %>
                     <div class="grid">
                         <% for (let book of prods) { %>

@@ -6,22 +6,22 @@ exports.getEBooks = (req,res,next) => {
     const page = +req.query.page || 1;
     let totalItems;
     let noMatch; 
-   if(req.query.sort){
-    const regex = new RegExp(escapeRegex(req.query.sort), 'gi');
+   if(req.query.filter === "category"){
+    const regex = new RegExp(utils.escapeRegex(req.query.sort), 'gi');
     eBook.find({"category": regex }, (err, allBooks) => {
-      if(allBooks.length < 1) {
-        noMatch = "Search found no results";
+      if(err){
+        console.log(err);
       }
-      utils.renderEBooks(res, noMatch, allBooks, page, totalItems);
+        utils.renderEBooks(res, noMatch, allBooks, page, totalItems);
     }) 
    }
    if(req.query.search) {
-     const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+     const regex = new RegExp(utils.escapeRegex(req.query.search), 'gi');
   eBook.find({"title": regex }, (err, allBooks) => {
     if(allBooks.length < 1) {
       noMatch = "Search found no results";
     } 
-    utils.renderEBooks(res, noMatch, allBooks, page, totalItems);
+      utils.renderEBooks(res, noMatch, allBooks, page, totalItems);
   }) 
   } else {
   eBook.find()

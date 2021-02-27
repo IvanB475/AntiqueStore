@@ -1,0 +1,64 @@
+
+
+<div class="dropdown">
+        <div class="menu-wrapper">
+            <h3 class="category-title">Kategorije</h3>
+            <hr>
+                    <div class="menu">
+                        <form action="/books" method="GET" class="form-inline" id="getallBooksForm" name="getallBooksForm">
+                            <div class="form-group">
+                                <a onclick="document.getallBooksForm.submit()">Sve u ponudi</a>
+                            </div>
+                        </form>
+                        <form action="/books" method="GET" class="form-inline" id="antiqueForm" name="antiqueForm">
+                            <div class="form-group">
+                                <input type="hidden" name="sort" value="Antička književnost" class="form-control">
+                                <input type="hidden" name="filter" value="category" class="form-control">
+                                <a id="antique" onclick="document.antiqueForm.submit()">Antička književnost</a>
+                            </div>
+                        </form>
+                        <form action="/books" method="GET" class="form-inline" id="biographyForm" name="biographyForm">
+                            <div class="form-group">
+                                <input type="hidden" name="sort" value="Biografije" class="form-control">
+                                <input type="hidden" name="filter" value="category" class="form-control">
+                                <a id="biography" onclick="document.biographyForm.submit()">Biografije</a>
+                            </div>
+                        </form>
+                        <form action="/books" method="GET" class="form-inline" id="philosophyForm" name="philosophyForm">
+                            <div class="form-group">
+                                <input type="hidden" name="sort" value="Filozofija" class="form-control">
+                                <input type="hidden" name="filter" value="category" class="form-control">
+                                <a id="philosophy" onclick="document.philosophyForm.submit()">Filozofija</a>
+                            </div>
+                        </form>
+                        <form action="/books" method="GET" class="form-inline" id="internationalBooksForm" name="internationalBooksForm">
+                            <div class="form-group">
+                                <input type="hidden" name="sort" value="Knjige na stranom jeziku" class="form-control">
+                                <input type="hidden" name="filter" value="category" class="form-control">
+                                <a id="internationalBooks" onclick="document.internationalBooksForm.submit()">Knjige na stranom jeziku</a>
+                            </div>
+                        </form>
+                        <form action="/books" method="GET" class="form-inline" id="cookBooksForm" name="cookBooksForm">
+                            <div class="form-group">
+                                <input type="hidden" name="sort" value="Kuharice" class="form-control">
+                                <input type="hidden" name="filter" value="category" class="form-control">
+                                <a id="cookBooks" onclick="document.cookBooksForm.submit()">Kuharice</a>
+                            </div>
+                        </form>
+                        <form action="/books" method="GET" class="form-inline" id="medicalBooksForm" name="medicalBooksForm">
+                            <div class="form-group">
+                                <input type="hidden" name="sort" value="Medicina" class="form-control">
+                                <input type="hidden" name="filter" value="category" class="form-control">
+                                <a id="medicalBooks" onclick="document.medicalBooksForm.submit()">Medicina</a>
+                            </div>
+                        </form>
+                        <form action="/books" method="GET" class="form-inline" id="psychologyBooksForm" name="psychologyBooksForm">
+                            <div class="form-group">
+                                <input type="hidden" name="sort" value="Psihologija" class="form-control">
+                                <input type="hidden" name="filter" value="category" class="form-control">
+                                <a id="psychologyBooks" onclick="document.psychologyBooksForm.submit()">Psihologija</a>
+                            </div>
+                        </form>
+                    </div>
+        </div>
+</div>

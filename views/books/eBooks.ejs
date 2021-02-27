@@ -1,5 +1,6 @@
 <%- include('../partials/header.ejs') %>
     <link rel="stylesheet" href="/css/product.css">
+    <link rel="stylesheet" href="/css/menu.css">
     </head>
 
     <body>
@@ -23,6 +24,7 @@
                  <% } %>
              </div>
             <main>
+                <%- include('../partials/menuEBook.ejs') %>
                 <% if (prods.length > 0) { %>
                     <div class="grid">
                         <% for (let book of prods) { %>

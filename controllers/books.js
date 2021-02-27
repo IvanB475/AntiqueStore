@@ -79,7 +79,7 @@ exports.getBooks = (req,res,next) => {
     const page = +req.query.page || 1;
     let totalItems;
     let noMatch; 
-   if(req.query.sort){
+   if(req.query.filter === "category"){
     const regex = new RegExp(utils.escapeRegex(req.query.sort), 'gi');
     Book.find({"category": regex }, (err, allBooks) => {
       if(err){

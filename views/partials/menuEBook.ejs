@@ -1,0 +1,29 @@
+
+
+<div class="dropdown">
+        <div class="menu-wrapper">
+            <h3 class="category-title">Kategorije</h3>
+            <hr>
+                    <div class="menu">
+                        <form action="/eBooks" method="GET" class="form-inline" id="getallEBooksForm" name="getallEBooksForm">
+                            <div class="form-group">
+                                <a onclick="document.getallEBooksForm.submit()">Sve u ponudi</a>
+                            </div>
+                        </form>
+                        <form action="/eBooks" method="GET" class="form-inline" id="historyBooksForm" name="historyBooksForm">
+                            <div class="form-group">
+                                <input type="hidden" name="sort" value="Povijest" class="form-control">
+                                <input type="hidden" name="filter" value="category" class="form-control">
+                                <a id="historyBooks" onclick="document.historyBooksForm.submit()">Povijest</a>
+                            </div>
+                        </form>
+                        <form action="/eBooks" method="GET" class="form-inline" id="religionBooksForm" name="religionBooksForm">
+                            <div class="form-group">
+                                <input type="hidden" name="sort" value="Religija" class="form-control">
+                                <input type="hidden" name="filter" value="category" class="form-control">
+                                <a id="religionBooks" onclick="document.religionBooksForm.submit()">Religija i mitologija</a>
+                            </div>
+                        </form>
+                    </div>
+        </div>
+</div>

@@ -10,6 +10,8 @@
             <a href="?page=<%= nextPage %>"><%= nextPage %></a>
         <% } %>
         <% if (lastPage !== currentPage && nextPage !== lastPage) { %>
-            <a href="?page=<%= lastPage %>"><%= lastPage %></a>
+            <% if(!Number.isNaN(lastPage)) { %>
+                <a href="?page=<%= lastPage %>"><%= lastPage %></a>
+            <% } %>
         <% } %>
     </section>
