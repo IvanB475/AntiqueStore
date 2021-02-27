@@ -61,3 +61,57 @@ exports.getEBook = (req, res) => {
       }
     })
   }
+  
+  exports.getEditEBook = (req, res, next) => {
+    const editMode = req.query.edit;
+    if(!editMode) {
+      return res.redirect('/');
+    }
+    const bookId = req.params.id;
+    eBook.findById(bookId).then(book => {
+      if(!book) {
+        return res.redirect('/books');
+      }
+      res.render('books/add-book', {
+        pageTitle: 'Uredi sadržaj',
+        path: '/edit-book/:id',
+        editing: editMode,
+        book: book,
+        hasError: false,
+        errorMessage: null,
+        validationErrors: []
+      });
+    }).catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    })
+  };
+  
+  
+  exports.editEBook = (req, res) => {
+    const update = { title: req.body.title, price: req.body.price, imageUrl: req.file.path, description: req.body.description, category: req.body.category, autor: req.body.autor};
+    eBook.findByIdAndUpdate(req.body.bookId, update, (err) => {
+        if(err) {
+            res.redirect("/");
+        } else {
+            res.redirect('/books');
+        }
+    })
+}
+
+exports.deleteEBook = (req,res, next) => {
+    const bookId = req.params.id;
+    eBook.findById(bookId).then(book => {
+      if(!book) {
+        return next(new Error('Book not found'));
+      }
+      utils.deleteFile(book.imageUrl);
+      return Book.deleteOne({_id: bookId});
+    }).then(() => {
+      console.log("BOOK DELETED");
+      res.status(200).json({ message: "Obrisano!"});
+    }).catch(err => {
+      res.status(500).json({ message: "Brisanje nije uspjelo"});
+    })
+  }

@@ -24,7 +24,7 @@
             <% if (currentUser) { %>
             <%if (currentUser.status === "admin") { %> 
                 <div class="card__actions">
-                    <a href="/edit-book/<%= book._id %>?edit=true" class="btn">Edit</a>
+                    <a href="/edit-book/<%= book._id %>?edit=true" class="btn">Uredi</a>
                     <input type="hidden" value="<%= book._id %>" name="bookId">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     <form class="product-form" action="/delete-book/<%= book._id %>" method="GET" enctype="multipart/form-data">

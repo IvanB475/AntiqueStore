@@ -176,7 +176,7 @@ exports.deleteBook = (req,res, next) => {
       if(!book) {
         return next(new Error('Book not found'));
       }
-      fileHelper.deleteFile(book.imageUrl);
+      utils.deleteFile(book.imageUrl);
       return Book.deleteOne({_id: bookId});
     }).then(() => {
       console.log("BOOK DELETED");

@@ -2,7 +2,7 @@
 
 .menu{
     display: block;
-    background-color: darkslategray;
+    background-color: #00695c;
     width: 10rem;
     box-shadow: 10px 15px 15px gray;
     position: fixed;
@@ -18,14 +18,7 @@
     display: block;
 }
 
-.xbutton{
-    display: flex;
-    flex-direction: column;
-    max-width: 10rem;
-}
-
-a, 
-.xbutton {
+a {
     text-decoration: none;
     color: white;
     padding: 20px;
