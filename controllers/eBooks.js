@@ -6,23 +6,29 @@ exports.getEBooks = (req,res,next) => {
     const page = +req.query.page || 1;
     let totalItems;
     let noMatch; 
-   if(req.query.filter === "category"){
+     if(req.query.filter === "category"){
     const regex = new RegExp(utils.escapeRegex(req.query.sort), 'gi');
-    eBook.find({"category": regex }, (err, allBooks) => {
-      if(err){
-        console.log(err);
-      }
-        utils.renderEBooks(res, noMatch, allBooks, page, totalItems);
-    }) 
+      eBook.find({ category: regex })
+    .then(allBooks => {
+       utils.renderEBooks(res, noMatch, allBooks, page, totalItems);
+    })
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
    }
-   if(req.query.search) {
+   else if(req.query.search) {
      const regex = new RegExp(utils.escapeRegex(req.query.search), 'gi');
-  eBook.find({"title": regex }, (err, allBooks) => {
-    if(allBooks.length < 1) {
-      noMatch = "Search found no results";
-    } 
-      utils.renderEBooks(res, noMatch, allBooks, page, totalItems);
-  }) 
+    eBook.find({ title: regex })
+    .then(allBooks => {
+       utils.renderEBooks(res, noMatch, allBooks, page, totalItems);
+    })
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
   } else {
   eBook.find()
     .countDocuments()
