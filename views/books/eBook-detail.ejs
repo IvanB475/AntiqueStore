@@ -27,7 +27,7 @@
                     <a href="/edit-eBook/<%= eBook._id %>?edit=true" class="btn">Uredi</a>
                     <input type="hidden" value="<%= eBook._id %>" name="bookId">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                    <form class="product-form" action="/delete-eBook/<%= eBook._id %>" method="GET" enctype="multipart/form-data">
+                    <form class="book_display" action="/delete-eBook/<%= eBook._id %>" method="GET" enctype="multipart/form-data">
                         <button class="btn">Obriši</button>
                     </form>
                 </div>
