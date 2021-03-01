@@ -4,18 +4,16 @@
     <body>
             <%- include('../partials/navigation.ejs') %>
         <main>
-            <b>Hello world</b>
-
-                <h2>Kontakt forma</h2>
-                <form action="/" method="POST" enctype='application/json'>
-                    <div class="form-control">
-                        <input type="text" name="name" placeholder="Vaše ime">
-                        <input type="email" name="email" placeholder="Vaš email">
-                        <textarea id="message" name="message" placeholder="Unesite pitanje" rows="3"></textarea>
-                    </div>
-                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                    <button class="btn">Pošalji</button>
-                </form>
-
+            <section>
+                 <div class="background-image"></div>
+                <div class="landing_grid">
+                    <h1 class ="landing_title">Antikvarijat Lorem Ipsum</h1>
+                    <br>
+                    <h2 class="landing_subtitle">Dobrodošli u antikvarijat s najraznovrsnijom ponudom knjiga i e-knjiga!</h2>
+                    <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                    
+                    <p>Note: Ovo je portfolio projekt te kupovina knjiga nije moguća, a ponuda knjiga je preuzeta s webstranice antikvarijata-bono (https://antikvarijat-bono.com/).</p>
+                </div>
+            </section>
         </main>        
     </body>
