@@ -16,6 +16,7 @@ require('dotenv').config();
 
 const User = require('./models/user');
 const PORT = process.env.PORT || 5000;
+const IP = process.env.IP || '0.0.0.0';
 
 
 fs.readdir('routes', (err, files) => {
@@ -112,8 +113,8 @@ app.use((req, res, next) => {
 mongoose
   .connect(MONGODB_URI, {useNewUrlParser: true})
   .then(result => {
-    app.listen(PORT);
-    console.log("app started");
+    app.listen(PORT, '0.0.0.0');
+    console.log("app started on" + PORT + IP);
   })
   .catch(err => {
     console.log(err);
