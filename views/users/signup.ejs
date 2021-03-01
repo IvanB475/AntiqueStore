@@ -1,18 +1,44 @@
 
     <%- include('../partials/header.ejs') %>
-    
+    <link rel="stylesheet" href="/css/loginForm.css">
 </head>
 <body>
         <%- include('../partials/navigation.ejs') %>
-<h1>Registracija</h1>
 
-<form action="/signup" method="POST">
-    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-    <input type="text" name="username" placeholder="Korisnicko ime">
-    <input type="password" name="password" pattern=".{6,}" placeholder="password">
-    <input type="email" name="email" placeholder="email">
-    <button>Registriraj se!</button>
-</form>
+
+<section>
+
+	<hgroup>
+	    <h2>Dobrodošli!</h2>
+		<p>Molimo vas da se registrirate prije početka</p>
+	</hgroup>
+
+	<form method = "post" class = "log-form">
+
+	    <div class="group log-input">
+	    	<input type="text" id = "username" name = "username" placeholder = "Korisničko ime">
+	    </div>
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <div class="group log-input">
+	        <input type="email" id = "email" name = "email"  placeholder = "Email">
+	    </div>
+	    <div class="group log-input">
+	        <input type="password" id = "password" name = "password"  placeholder = "Lozinka">
+	    </div>
+
+	  
+
+		<div class="container-log-btn">
+          <button type="submit" name = "btn_submit" class="log-form-btn">
+            <span>Registriraj se</span>
+          </button>
+        </div>
+
+	</form>
+
+	
+
+</section>
 
 
 </html>

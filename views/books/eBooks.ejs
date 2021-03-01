@@ -42,7 +42,7 @@
                                 <div class="card__actions">
                                     <a href="/eBooks/<%= book._id %>" class="btn">Više</a>
                                     <% if (currentUser) { %>
-                                    <form action="/cart" method="post">
+                                    <form action="/cart" method="post" class="book_display">
                                         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                                         <input type="hidden" name="bookId" value="<%= book._id %>">
                                         <input type="hidden" name="bookType" value="eBook">

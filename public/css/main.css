@@ -15,7 +15,7 @@ main {
   margin: auto;
 }
 
-form {
+.book_display {
   display: inline;
 }
 
@@ -274,8 +274,8 @@ form {
   margin-top: 2rem;
   font-size: 28px;
   border: 2px solid #00695c;
-  background-color: #00695c;
-  color: white;
+  background-color: white;
+  color: #00695c;
 }
 
 .btn:hover,
