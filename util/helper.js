@@ -8,8 +8,9 @@ exports.deleteFile = (filePath) => {
     });
 }
 
-const ITEMS_PER_PAGE = 8;
+
 exports.renderView = (res, noMatch, allBooks, page, totalItems) => {
+        const ITEMS_PER_PAGE = 16;
         res.render("books/books", {
           noMatch: noMatch,
           prods: allBooks,
@@ -44,17 +45,18 @@ exports.renderError = (res, title, price, description, autor, category) => {
 
 
 exports.renderEBooks =  (res, noMatch, allBooks, page, totalItems) => {
+    const ITEMS_PER_PAGE = 8;
     res.render("books/eBooks", {
-    noMatch: noMatch,
-    prods: allBooks,
-    pageTitle: 'eBooks',
-    path: '/eBooks',
-    currentPage: page,
-    hasNextPage: ITEMS_PER_PAGE * page < totalItems,
-    hasPreviousPage: page > 1,
-    nextPage: page + 1,
-    previousPage: page - 1,
-    lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE)
+        noMatch: noMatch,
+        prods: allBooks,
+        pageTitle: 'eBooks',
+        path: '/eBooks',
+        currentPage: page,
+        hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+        hasPreviousPage: page > 1,
+        nextPage: page + 1,
+        previousPage: page - 1,
+        lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE)
   })
 }
 

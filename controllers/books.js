@@ -3,7 +3,7 @@ const eBook = require("../models/eBook");
 const { validationResult } = require('express-validator');
 const utils = require("../util/helper");
 
-const ITEMS_PER_PAGE = 8;
+const ITEMS_PER_PAGE = 16;
 
 exports.getAddBook = async (req, res) => {
     res.render("books/add-book", {
