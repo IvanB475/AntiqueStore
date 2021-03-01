@@ -122,13 +122,12 @@ exports.getBooks = (req,res,next) => {
 }
 };
 
-exports.getBook = (req, res) => {
+exports.getBook = (req, res, next) => {
     Book.findById(req.params.id).exec((err, foundBook) => {
       if(err) {
        console.log(err);
       } else {
-        Book.find({category: foundBook.category}, (err, relatedBooks) => {
-          console.log(relatedBooks);
+        Book.find({category: foundBook.category}).limit(5).then(relatedBooks => {
         res.render("books/book-detail", {
           path: '/books/:id',
           book: foundBook,
