@@ -81,21 +81,27 @@ exports.getBooks = (req,res,next) => {
     let noMatch; 
    if(req.query.filter === "category"){
     const regex = new RegExp(utils.escapeRegex(req.query.sort), 'gi');
-    Book.find({"category": regex }, (err, allBooks) => {
-      if(err){
-        console.log(err);
-      }
-        utils.renderView(res, noMatch, allBooks, page, totalItems);
-    }) 
-   }
-   if(req.query.search) {
-     const regex = new RegExp(utils.escapeRegex(req.query.search), 'gi');
-  Book.find({"title": regex }, (err, allBooks) => {
-    if(allBooks.length < 1) {
-      noMatch = "Search found no results";
-    } 
+      Book.find({ category: regex })
+    .then(allBooks => {
       utils.renderView(res, noMatch, allBooks, page, totalItems);
-  }) 
+    })
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+   }
+   else if(req.query.search) {
+     const regex = new RegExp(utils.escapeRegex(req.query.search), 'gi');
+    Book.find({ title: regex })
+    .then(allBooks => {
+      utils.renderView(res, noMatch, allBooks, page, totalItems);
+    })
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 } else {
   Book.find()
     .countDocuments()
