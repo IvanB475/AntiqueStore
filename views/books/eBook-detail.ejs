@@ -39,27 +39,28 @@
                     <% if (relatedBooks.length > 1) { %>
                    <h2 class="centered related-products"> Slične knjige </h2>
                        <div class="grid">
-                           <% for (let rb of relatedBooks) { %>
-                            <% if(rb.title != eBook.title) {%>
+                           <% var relatedBooks = relatedBooks.filter( rb => rb.id != eBook._id) %>
+                            <% for(var i = 0; i < 4; i++) { %>  
+                            <% if(relatedBooks[i].id != eBook._id) {%>
                                <article class="card product-item">
                                    <header class="card__header">
                                        <h1 class="product__title">                                        
-                                           <%= rb.title %>
+                                           <%= relatedBooks[i].title %>
                                        </h1>
                                    </header>
                                    <div class="card__image">
-                                       <a href="/eBooks/<%= rb.id %>"><img src="/<%= rb.imageUrl %>" alt="<%= rb.title %>"></a>
+                                       <a href="/eBooks/<%= relatedBooks[i].id %>"><img src="/<%= relatedBooks[i].imageUrl %>" alt="<%= relatedBooks[i].title %>"></a>
                                    </div>
                                    <div class="card__content">
                                        <h2 class="product__price">
-                                           <%= rb.price %> kn
+                                           <%= relatedBooks[i].price %> kn
                                        </h2>
                                        <p class="product__description">
-                                           <%= rb.autor %>
+                                           <%= relatedBooks[i].autor %>
                                        </p>
                                    </div>
                                    <div class="card__actions">
-                                       <a href="/eBooks/<%= rb._id %>" class="btn">Više</a>
+                                       <a href="/eBooks/<%= relatedBooks[i]._id %>" class="btn">Više</a>
                                        </div>
                                       
                                </article>

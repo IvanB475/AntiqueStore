@@ -34,7 +34,6 @@ exports.getEBooks = (req,res,next) => {
     .countDocuments()
     .then(numBooks => {
       totalItems = numBooks;
-      console.log(numBooks);
       return eBook.find()
         .skip((page - 1) * ITEMS_PER_PAGE)
         .limit(ITEMS_PER_PAGE);
@@ -56,14 +55,13 @@ exports.getEBook = (req, res) => {
       if(err) {
        console.log(err);
       } else {
-        eBook.find({category: foundBook.category}, (err, relatedBooks) => {
-          console.log(relatedBooks);
+        eBook.find({category: foundBook.category}).limit(5).then(relatedBooks => {
         res.render("books/eBook-detail", {
           path: '/books/eBook/:id',
           eBook: foundBook,
           relatedBooks: relatedBooks
         })
-      })
+        });
       }
     })
   }
