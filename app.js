@@ -26,7 +26,7 @@ fs.readdir('routes', (err, files) => {
   })
 });
 
-const MONGODB_URI = process.env.MONGODB_URI;
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/test';
 mongoose.set('useFindAndModify', false);
 const app = express();
 const store = new MongoDBStore({
@@ -100,6 +100,11 @@ app.use((req, res, next) => {
     });
 });
 
+app.use((req, res, next) => {
+  let ip = req.connection.remoteAddress.split(`:`).pop();
+  console.log(ip);
+  next();
+})
 
 
 app.use((req, res, next) => {

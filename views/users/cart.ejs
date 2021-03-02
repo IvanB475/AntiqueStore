@@ -13,6 +13,7 @@
                     <% books.forEach(b => { %>
                         <% let currentPrice = b.bookId.price * b.quantity; %>
                         <li class="cart__item">
+                            <img src="/<%= b.bookId.imageUrl %>" height="70" width="50" alt="<%= b.bookId.title %>">
                             <h1><%= b.bookId.title %></h1>
                             <h5>Količina: <%= b.quantity %></h5>
                             <h5>Cijena: <%= currentPrice %> kn</h5>

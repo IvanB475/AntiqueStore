@@ -11,7 +11,7 @@
             <div class="image">
                 <img src="/<%= eBook.imageUrl %>" alt="<%= eBook.title %>">
             </div>
-            <h2><%= eBook.price %> kn</h2>
+            <h2><%= eBook.price %>,00 kn</h2>
             <p><%= eBook.description %></p>
             <% if (currentUser) { %>
                                     <form action="/cart" method="post">
@@ -40,8 +40,9 @@
                    <h2 class="centered related-products"> Slične knjige </h2>
                        <div class="grid">
                            <% var relatedBooks = relatedBooks.filter( rb => rb.id != eBook._id) %>
-                            <% for(var i = 0; i < 4; i++) { %>  
-                            <% if(relatedBooks[i].id != eBook._id) {%>
+                            <% for(var i = 0; i < 4; i++) { %> 
+                            <% if(relatedBooks[i]) { %>
+                            <% if(relatedBooks[i]._id != eBook._id) {%>
                                <article class="card product-item">
                                    <header class="card__header">
                                        <h1 class="product__title">                                        
@@ -53,7 +54,7 @@
                                    </div>
                                    <div class="card__content">
                                        <h2 class="product__price">
-                                           <%= relatedBooks[i].price %> kn
+                                           <%= relatedBooks[i].price %>,00 kn
                                        </h2>
                                        <p class="product__description">
                                            <%= relatedBooks[i].autor %>
@@ -64,6 +65,7 @@
                                        </div>
                                       
                                </article>
+                               <% } %>
                                <% } %>
                                <% } %>
                                

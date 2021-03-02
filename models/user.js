@@ -65,7 +65,7 @@ UserSchema.methods.addToCart = function(book, bookType) {
 
 UserSchema.methods.removeFromCart = function(bookId) {
     const updatedCartItems = this.cart.items.filter(item => {
-        return item._id.toString() !== bookId.toString();
+        return item.bookId._id.toString() !== bookId.toString();
     });
     this.cart.items = updatedCartItems;
     return this.save();

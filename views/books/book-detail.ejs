@@ -11,7 +11,7 @@
             <div class="image">
                 <img src="/<%= book.imageUrl %>" alt="<%= book.title %>">
             </div>
-            <h2><%= book.price %> kn</h2>
+            <h2><%= book.price %>,00 kn</h2>
             <p><%= book.description %></p>
             <% if (currentUser) { %>
                                     <form action="/cart" method="post">
@@ -41,6 +41,7 @@
                        <div class="grid">
                            <% relatedBooks = relatedBooks.filter( rb => rb.id != book._id) %>
                            <% for(var i = 0; i < 4; i++) { %>  
+                           <% if(relatedBooks[i]) { %>
                             <% if(relatedBooks[i].id != book._id) {%>
                                <article class="card product-item">
                                    <header class="card__header">
@@ -64,6 +65,7 @@
                                        </div>
                                       
                                </article>
+                               <% } %>
                                <% } %>
                                <% } %>
                                
