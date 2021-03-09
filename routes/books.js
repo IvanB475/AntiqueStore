@@ -14,8 +14,8 @@ router.get("/books", queryValidator(joiSchema.searchBook), bookController.getBoo
       .get('/delete-book/:id', isAdmin, bookController.deleteBook);
 
 
-router.post('/add-book', isAdmin, bookController.addBook)
-      .post('/edit-book/:id', isAdmin, bookController.editBook);
+router.post('/add-book', isAdmin, validator(joiSchema.addBook), bookController.addBook)
+      .post('/edit-book/:id', isAdmin, validator(joiSchema.editBook), bookController.editBook);
 
 
 

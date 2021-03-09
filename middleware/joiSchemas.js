@@ -1,10 +1,13 @@
 const Joi = require('joi');
 const schema = {
     searchBook: Joi.object().keys({
-        search: Joi.string().alphanum()
+        search: Joi.string().regex(/^[\w-A-ZČ-Ža-ž\s]+$/),
+        page: Joi.any(),
+        sort: Joi.string().regex(/^[\w-A-ZČ-Ža-ž\s]+$/),
+        filter: Joi.string().alphanum()
     }),
     login: Joi.object().keys({
-        username: Joi.string().alphanum().required(),
+        username: Joi.string().regex(/^[\w\-\s]+$/).required(),
         password: Joi.string().alphanum().min(6).max(36).required().strip(),
         _csrf: Joi.string(),
     }),
@@ -13,7 +16,7 @@ const schema = {
         _csrf: Joi.string(),
     }),
     signup: Joi.object().keys({
-        username: Joi.string().alphanum().required(),
+        username: Joi.string().regex(/^[\w\-\s]+$/).required(),
         email: Joi.string().email().required(),
         password: Joi.string().alphanum().min(6).max(36).required().strip(),
         _csrf: Joi.string(),
@@ -27,23 +30,23 @@ const schema = {
         _csrf: Joi.string(),
     }),
     addBook: Joi.object().keys({
-        title: Joi.string().alphanum().required(),
+        title: Joi.string().regex(/^[\w-A-ZČ-Ža-ž\s]+$/).required(),
         price: Joi.number().required(),
-        category: Joi.string().alphanum().required(),
-        autor: Joi.string().alphanum().required(),
-        bookType: Joi.string().alphanum().required(),
-        description: Joi.string().alphanum().required(),
+        category: Joi.string().regex(/^[\w-A-ZČ-Ža-ž\s]+$/).required(),
+        autor: Joi.string().regex(/^[\w-A-ZČ-Ža-ž\s]+$/).required(),
+        bookType: Joi.string().regex(/^[\w\-\s]+$/).required(),
+        description: Joi.string().regex(/^[\w-A-ZČ-Ža-ž\s]+$/).required(),
         _csrf: Joi.string(),
     }).unknown(),
     editBook: Joi.object().keys({
-        title: Joi.string().alphanum().required(),
+        title: Joi.string().regex(/^[\w-A-ZČ-Ža-ž\s]+$/).required(),
         price: Joi.number().required(),
-        category: Joi.string().alphanum().required(),
-        autor: Joi.string().alphanum().required(),
-        bookType: Joi.string().alphanum().required(),
-        description: Joi.string().alphanum().required(),
+        category: Joi.string().regex(/^[\w-A-ZČ-Ža-ž\s]+$/).required(),
+        autor: Joi.string().regex(/^[\w-A-ZČ-Ža-ž\s]+$/).required(),
+        bookType: Joi.string().regex(/^[\w\-\s]+$/).required(),
+        description: Joi.string().regex(/^[\w-A-ZČ-Ža-ž\s]+$/).required(),
         _csrf: Joi.string(),
-    }).unknown()
+    }).unknown(),
 }
 
 module.exports = schema;

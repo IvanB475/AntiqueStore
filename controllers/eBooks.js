@@ -111,10 +111,10 @@ exports.deleteEBook = (req,res, next) => {
         return next(new Error('Book not found'));
       }
       utils.deleteFile(book.imageUrl);
-      return Book.deleteOne({_id: bookId});
+      return eBook.deleteOne({_id: bookId});
     }).then(() => {
       console.log("BOOK DELETED");
-      res.status(200).json({ message: "Obrisano!"});
+      res.redirect("/eBooks");
     }).catch(err => {
       res.status(500).json({ message: "Brisanje nije uspjelo"});
     })

@@ -1,5 +1,6 @@
 <%- include('../partials/header.ejs') %>
     <link rel="stylesheet" href="/css/product.css">
+    <script src="https://kit.fontawesome.com/42dba9c49b.js" crossorigin="anonymous"></script>
     </head>
 
 
@@ -18,7 +19,7 @@
                                         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                                         <input type="hidden" name="bookId" value="<%= eBook.id %>">
                                         <input type="hidden" name="bookType" value="eBook">
-                                        <button class="btn btn-lg"  type="submit">Dodaj u košaricu</button>
+                                        <button class="btn btn-lg"  type="submit">Dodaj u košaricu<i class="fas fa-shopping-cart"></i></button>
                                     </form>
                                     <% } %>
             <% if (currentUser) { %>

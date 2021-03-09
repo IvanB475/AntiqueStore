@@ -185,7 +185,7 @@ exports.deleteBook = (req,res, next) => {
       return Book.deleteOne({_id: bookId});
     }).then(() => {
       console.log("BOOK DELETED");
-      res.status(200).json({ message: "Obrisano!"});
+      res.redirect("/books");
     }).catch(err => {
       res.status(500).json({ message: "Brisanje nije uspjelo"});
     })
