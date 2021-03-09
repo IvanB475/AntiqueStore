@@ -50,7 +50,7 @@ exports.postLogin =
 
 exports.postAdminRegister = (req, res) => {
 
-    if (req.body.kod === process.env.ADMIN_CODE){
+    if (req.body.code === process.env.ADMIN_CODE){
         let update = { status: "admin"};
     User.findByIdAndUpdate(req.user._id, update, (err) => {
         if(err) {
