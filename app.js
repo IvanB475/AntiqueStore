@@ -12,6 +12,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const fs = require('fs');
 require('dotenv').config();
+const rateLimit = require("express-rate-limit");
 
 
 const User = require('./models/user');
@@ -113,6 +114,13 @@ app.use((req, res, next) => {
   next();
 });
 
+
+const limiter = rateLimit({
+  windowMs: 2 * 60 * 1000, 
+  max: 100
+});
+
+app.use(limiter);
 
 
 mongoose

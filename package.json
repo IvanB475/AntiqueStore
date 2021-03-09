@@ -18,6 +18,7 @@
     "dotenv": "^8.2.0",
     "ejs": "^2.7.4",
     "express": "^4.17.1",
+    "express-rate-limit": "^5.2.6",
     "express-session": "^1.17.1",
     "express-validator": "^6.6.1",
     "flash": "^1.1.0",
