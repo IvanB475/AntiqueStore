@@ -6,6 +6,7 @@
 .pnp.js
 /.env
 /images
+/to-do before production.txt
 
 
 # testing

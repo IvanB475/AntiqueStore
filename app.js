@@ -32,7 +32,8 @@ mongoose.set('useFindAndModify', false);
 const app = express();
 const store = new MongoDBStore({
   uri: MONGODB_URI,
-  collection: 'sessions'
+  collection: 'sessions',
+  expires: 1000 * 60 * 60 * 12,
 });
 const csrfProtection = csrf();
 
