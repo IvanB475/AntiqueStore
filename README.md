@@ -52,7 +52,7 @@ You can contact me if you want my advice where to go from here to prepare it for
 
 If you want to sign up on the preview project, please use dummy data. Project uses basic joi validation, so make sure that email has a proper email structure (E.G. example@example.com) and that password has at least 6 characters.
 
-To sign in into preview project I've prepared few test accounts: test user 1-5, with password 123456 (E.G.  username: test user 1, password: 123456).
+To sign in into preview project I've prepared a few test accounts: test user 1-5, with password 123456 (E.G.  username: test user 1, password: 123456).
 
 App supports accounts with 2 levels of privileges: "user" and "admin"
 User account - has only necessary functionalities for users ( add to cart, remove from cart, buy book, edit email address...)

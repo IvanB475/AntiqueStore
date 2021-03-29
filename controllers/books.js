@@ -35,108 +35,103 @@ exports.addBook = (req, res, next) => {
 
     const imageUrl = image.path;
     if(bookType === 'Book') { 
-    const book = new Book({
-        title: title,
-        price: price,
-        description: description,
-        category: category,
-        autor: autor,
-        imageUrl: imageUrl,
-        userId: req.user
-    });
-    book.save().then(result => {
-        console.log('Book added!');
-        res.redirect('/books');
+      const book = new Book({
+          title: title,
+          price: price,
+          description: description,
+          category: category,
+          autor: autor,
+          imageUrl: imageUrl,
+          userId: req.user
+      });
+      book.save().then(() => {
+          res.redirect('/books');
 
-    }).catch( err => {
-        const error = new Error(err);
-        error.httpStatusCode = 500;
-        return next(error);
-    })
-} else {
-    const book = new eBook({
-        title: title,
-        price: price,
-        description: description,
-        category: category,
-        autor: autor,
-        imageUrl: imageUrl,
-        userId: req.user
-    });
-    book.save().then(result => {
-        console.log('eBook added!');
-        res.redirect('/eBooks');
+      }).catch( err => {
+          const error = new Error(err);
+          error.httpStatusCode = 500;
+          return next(error);
+      })
+    } else {
+      const book = new eBook({
+          title: title,
+          price: price,
+          description: description,
+          category: category,
+          autor: autor,
+          imageUrl: imageUrl,
+          userId: req.user
+      });
+      book.save().then(result => {
+          console.log('eBook added!');
+          res.redirect('/eBooks');
 
-    }).catch( err => {
-        const error = new Error(err);
-        error.httpStatusCode = 500;
-        return next(error);
-    })
-}
+      }).catch( err => {
+          const error = new Error(err);
+          error.httpStatusCode = 500;
+          return next(error);
+      })
+    }
 }
 
 exports.getBooks = (req,res,next) => {
     const page = +req.query.page || 1;
     let totalItems;
     let noMatch; 
-   if(req.query.filter === "category"){
-    const regex = new RegExp(utils.escapeRegex(req.query.sort), 'gi');
-      Book.find({ category: regex })
-    .then(allBooks => {
-      utils.renderView(res, noMatch, allBooks, page, totalItems);
-    })
-    .catch(err => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
-   }
-   else if(req.query.search) {
-     const regex = new RegExp(utils.escapeRegex(req.query.search), 'gi');
-    Book.find({ title: regex })
-    .then(allBooks => {
-      utils.renderView(res, noMatch, allBooks, page, totalItems);
-    })
-    .catch(err => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
-} else {
-  Book.find()
-    .countDocuments()
-    .then(numBooks => {
-      totalItems = numBooks;
-      return Book.find()
-        .skip((page - 1) * ITEMS_PER_PAGE)
-        .limit(ITEMS_PER_PAGE);
-    }) 
-    .then(allBooks => {
-      utils.renderView(res, noMatch, allBooks, page, totalItems);
-    })
-    .catch(err => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
-}
+    if(req.query.filter === "category"){
+      const regex = new RegExp(utils.escapeRegex(req.query.sort), 'gi');
+      Book.find({ category: regex }).then(allBooks => {
+          utils.renderView(res, noMatch, allBooks, page, totalItems);
+      })
+      .catch(err => {
+          const error = new Error(err);
+          error.httpStatusCode = 500;
+          return next(error);
+      });
+    }
+    else if(req.query.search) {
+      const regex = new RegExp(utils.escapeRegex(req.query.search), 'gi');
+      Book.find({ title: regex }).then(allBooks => {
+          utils.renderView(res, noMatch, allBooks, page, totalItems);
+      })
+      .catch(err => {
+          const error = new Error(err);
+          error.httpStatusCode = 500;
+          return next(error);
+      });
+    } else {
+      Book.find().countDocuments().then(numBooks => {
+          totalItems = numBooks;
+          return Book.find()
+            .skip((page - 1) * ITEMS_PER_PAGE)
+            .limit(ITEMS_PER_PAGE);
+      }) 
+      .then(allBooks => {
+          utils.renderView(res, noMatch, allBooks, page, totalItems);
+      })
+      .catch(err => {
+          const error = new Error(err);
+          error.httpStatusCode = 500;
+          return next(error);
+      });
+    }
 };
 
-exports.getBook = (req, res, next) => {
+exports.getBook = (req, res) => {
     Book.findById(req.params.id).exec((err, foundBook) => {
       if(err) {
-       console.log(err);
+          console.log(err);
       } else {
         Book.find({category: foundBook.category}).limit(5).then(relatedBooks => {
-        res.render("books/book-detail", {
-          path: '/books/:id',
-          book: foundBook,
-          relatedBooks: relatedBooks
+            res.render("books/book-detail", {
+              path: '/books/:id',
+              book: foundBook,
+              relatedBooks: relatedBooks
+            })
         })
-      })
       }
     })
-  }
+}
 
 exports.getEditBook = (req, res, next) => {
     const editMode = req.query.edit;
@@ -146,7 +141,7 @@ exports.getEditBook = (req, res, next) => {
     const bookId = req.params.id;
     Book.findById(bookId).then(book => {
       if(!book) {
-        return res.redirect('/books');
+          return res.redirect('/books');
       }
       res.render('books/add-book', {
         pageTitle: 'Uredi sadržaj',
@@ -167,11 +162,11 @@ exports.getEditBook = (req, res, next) => {
 exports.editBook = (req, res) => {
     const update = { title: req.body.title, price: req.body.price, imageUrl: req.file.path, description: req.body.description, category: req.body.category, autor: req.body.autor};
     Book.findByIdAndUpdate(req.body.bookId, update, (err) => {
-        if(err) {
-            res.redirect("/");
-        } else {
-            res.redirect('/books');
-        }
+      if(err) {
+          res.redirect("/");
+      } else {
+          res.redirect('/books');
+      }
     })
 }
 
@@ -179,12 +174,12 @@ exports.deleteBook = (req,res, next) => {
     const bookId = req.params.id;
     Book.findById(bookId).then(book => {
       if(!book) {
-        return next(new Error('Book not found'));
+          return next(new Error('Book not found'));
+      } else { 
+          utils.deleteFile(book.imageUrl);
+          return Book.deleteOne({_id: book._id});
       }
-      utils.deleteFile(book.imageUrl);
-      return Book.deleteOne({_id: bookId});
     }).then(() => {
-      console.log("BOOK DELETED");
       res.redirect("/books");
     }).catch(err => {
       res.status(500).json({ message: "Brisanje nije uspjelo"});
