@@ -82,8 +82,7 @@ exports.getBooks = (req,res,next) => {
       const regex = new RegExp(utils.escapeRegex(req.query.sort), 'gi');
       Book.find({ category: regex }).then(allBooks => {
           utils.renderView(res, noMatch, allBooks, page, totalItems);
-      })
-      .catch(err => {
+      }).catch(err => {
           const error = new Error(err);
           error.httpStatusCode = 500;
           return next(error);
@@ -93,8 +92,7 @@ exports.getBooks = (req,res,next) => {
       const regex = new RegExp(utils.escapeRegex(req.query.search), 'gi');
       Book.find({ title: regex }).then(allBooks => {
           utils.renderView(res, noMatch, allBooks, page, totalItems);
-      })
-      .catch(err => {
+      }).catch(err => {
           const error = new Error(err);
           error.httpStatusCode = 500;
           return next(error);
@@ -105,11 +103,9 @@ exports.getBooks = (req,res,next) => {
           return Book.find()
             .skip((page - 1) * ITEMS_PER_PAGE)
             .limit(ITEMS_PER_PAGE);
-      }) 
-      .then(allBooks => {
+      }).then(allBooks => {
           utils.renderView(res, noMatch, allBooks, page, totalItems);
-      })
-      .catch(err => {
+      }).catch(err => {
           const error = new Error(err);
           error.httpStatusCode = 500;
           return next(error);
