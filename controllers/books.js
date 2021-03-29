@@ -118,19 +118,23 @@ exports.getBooks = (req,res,next) => {
 };
 
 exports.getBook = (req, res) => {
-    Book.findById(req.params.id).exec((err, foundBook) => {
-      if(err) {
-          console.log(err);
-      } else {
+    Book.findById(req.params.id).exec().then(foundBook => {
         Book.find({category: foundBook.category}).limit(5).then(relatedBooks => {
             res.render("books/book-detail", {
               path: '/books/:id',
               book: foundBook,
               relatedBooks: relatedBooks
             })
+        }).catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
         })
-      }
-    })
+      }).catch(err => {
+          const error = new Error(err);
+          error.httpStatusCode = 500;
+          return next(error);
+      })
 }
 
 exports.getEditBook = (req, res, next) => {
@@ -161,12 +165,12 @@ exports.getEditBook = (req, res, next) => {
 
 exports.editBook = (req, res) => {
     const update = { title: req.body.title, price: req.body.price, imageUrl: req.file.path, description: req.body.description, category: req.body.category, autor: req.body.autor};
-    Book.findByIdAndUpdate(req.body.bookId, update, (err) => {
-      if(err) {
-          res.redirect("/");
-      } else {
-          res.redirect('/books');
-      }
+    Book.findByIdAndUpdate(req.body.bookId, update).then(() => {
+        res.redirect('/books');
+    }).catch(err => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
     })
 }
 
