@@ -1,38 +1,35 @@
-const Book = require('../models/book');
-const eBook = require('../models/eBook');
 const mongoose = require('mongoose');
 const stripe = require('stripe')(process.env.stripe);
-
 
 
 
 exports.postCart = (req, res, next) => {
     const bookId = req.body.bookId;
     const bookType = req.body.bookType;
-        mongoose.model(bookType).findById(bookId).then(book => {
+    mongoose.model(bookType).findById(bookId).then(book => {
         return req.user.addToCart(book, bookType);
-    }).then(result => {
+    }).then(() => {
         res.redirect('/cart');
     }).catch(err => {
         const error = new Error(err);
         error.httpStatusCode = 500;
         return next(error);
     })
-  };
+};
   
   
-  exports.postCartRemove = (req,res, next) => {
+exports.postCartRemove = (req,res, next) => {
     const bookId = req.body.bookId;
-    req.user.removeFromCart(bookId).then(result => {
+    req.user.removeFromCart(bookId).then(() => {
         res.redirect('/cart');
     }).catch(err => {
         const error = new Error(err);
         error.httpStatusCode = 500;
         return next(error);
     })
-  }
+}
 
-  exports.getCheckout = (req,res, next) => {
+exports.getCheckout = (req,res, next) => {
     req.user.populate('cart.items.bookId').execPopulate().then(user => {
         const books = user.cart.items;
         let totalPrice = 0;
@@ -50,18 +47,18 @@ exports.postCart = (req, res, next) => {
         error.httpStatusCode = 500;
         return next(error);
     })
-  }
+}
   
-  exports.getCart = (req, res, next) => {
+exports.getCart = (req, res, next) => {
     req.user.populate('cart.items.bookId').execPopulate().then(user => {
         const books = user.cart.items;
         const updatedBooks = [];
         books.forEach(bookId => {
-                if(bookId.bookId === null) {
-        user.removeFromCart(bookId._id);
-                } else {
-                    updatedBooks.push(bookId);
-                }
+            if(bookId.bookId === null) {
+                user.removeFromCart(bookId._id);
+            } else {
+                updatedBooks.push(bookId);
+            }
         })
         res.render('users/cart', {
             path: '/cart',
@@ -73,11 +70,11 @@ exports.postCart = (req, res, next) => {
         error.httpStatusCode = 500;
         return next(error);
     })
-  }
+}
 
-  exports.createCheckoutSession = async (req, res) => {
-    const DOMAIN = 'http://localhost:5000';
-    const session = await stripe.checkout.sessions.create({
+  exports.createCheckoutSession = (req, res) => {
+    const DOMAIN = process.env.PORT && process.env.HOST ? `${process.env.HOST}/${process.env.PORT}` : 'http://localhost:8081';
+    stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [
         {
@@ -95,7 +92,11 @@ exports.postCart = (req, res, next) => {
       mode: 'payment',
       success_url: `${DOMAIN}/books`,
       cancel_url: `${DOMAIN}/eBook`,
-    });
-
-    res.json({ id: session.id });
+    }).then(session => {
+        res.json({ id: session.id });
+    }).catch(err => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(err);
+    })
   }
