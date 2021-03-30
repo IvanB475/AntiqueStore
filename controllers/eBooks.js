@@ -61,7 +61,7 @@ exports.getEditEBook = (req, res, next) => {
         return res.redirect('/');
     } else { 
         const bookId = req.params.id;
-        eBook.findById(bookId).then(book => {
+        eBook.findById(bookId).exec().then(book => {
             if(!book) {
               return res.redirect('/books');
             } else {
