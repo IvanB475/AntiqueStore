@@ -52,7 +52,7 @@ exports.postLogin =
 exports.postAdminRegister = (req, res) => {
     if (req.body.code === process.env.ADMIN_CODE){
         let update = { status: "admin"};
-        User.findByIdAndUpdate(req.user._id, update).then(() => {
+        User.findByIdAndUpdate(req.user._id, update).exec().then(() => {
             res.render("users/settings", { path: 'users/settings'});
         }).catch(err => {
             const error = new Error(err);
@@ -67,7 +67,7 @@ exports.postAdminRegister = (req, res) => {
 
 exports.postSettings = (req, res, next) => {
     const update = {email: req.body.email}
-    User.findByIdAndUpdate(req.user._id, update).then(result => {
+    User.findByIdAndUpdate(req.user._id, update).exec().then(result => {
         res.render('index/landing', {path: '/'});
         console.log(result);
     }).catch(err => {
@@ -80,7 +80,7 @@ exports.postSettings = (req, res, next) => {
 
 exports.postReset = (req, res, next) => {
     const token = crypto.randomBytes(32).toString('hex');
-    User.findOne({ email: req.body.email }).then(user => {
+    User.findOne({ email: req.body.email }).exec().then(user => {
           /**Creates token */
           user.resetPasswordToken = token;
           /** Token duration */
@@ -119,7 +119,7 @@ exports.postReset = (req, res, next) => {
 
 
 exports.postResetToken = (req, res, next) => {
-    User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now()}}).then(user => {
+    User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now()}}).exec().then(user => {
       if(req.body.password === req.body.confirm) {
         user.setPassword(req.body.password).then(() => {
           user.resetPasswordToken = undefined;
@@ -162,7 +162,7 @@ exports.postResetToken = (req, res, next) => {
 };
 
 exports.getResetToken = (req, res, next) => {
-    User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now()}}).then(() => { 
+    User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now()}}).exec().then(() => { 
       res.render('users/resetpw', {token: req.params.token});
     }).catch(err => {
       const error = new Error(err);
@@ -187,7 +187,7 @@ exports.getAdminRegister = (req, res) => {
 
 
 exports.getSettings = (req,res, next) => {
-    User.findById(req.user._id).then(foundUser => {
+    User.findById(req.user._id).exec().then(foundUser => {
       res.render("users/settings", {path: 'users/settings', user: foundUser})
     }).catch(err => {
       const error = new Error(err);
