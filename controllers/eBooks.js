@@ -8,7 +8,7 @@ exports.getEBooks = (req,res,next) => {
     let noMatch; 
       if(req.query.filter === "category"){
           const regex = new RegExp(utils.escapeRegex(req.query.sort), 'gi');
-          eBook.find({ category: regex }).then(allBooks => {
+          eBook.find({ category: regex }).exec().then(allBooks => {
               utils.renderEBooks(res, noMatch, allBooks, page, totalItems);
           }).catch(err => {
               const error = new Error(err);
@@ -17,7 +17,7 @@ exports.getEBooks = (req,res,next) => {
           });
       } else if(req.query.search) {
           const regex = new RegExp(utils.escapeRegex(req.query.search), 'gi');
-          eBook.find({ title: regex }).then(allBooks => {
+          eBook.find({ title: regex }).exec().then(allBooks => {
               utils.renderEBooks(res, noMatch, allBooks, page, totalItems);
           }).catch(err => {
               const error = new Error(err);
@@ -25,7 +25,7 @@ exports.getEBooks = (req,res,next) => {
               return next(error);
           });
       } else {
-          eBook.find().countDocuments().then(numBooks => {
+          eBook.find().countDocuments().exec().then(numBooks => {
               totalItems = numBooks;
               return eBook.find().skip((page - 1) * ITEMS_PER_PAGE).limit(ITEMS_PER_PAGE);
           }).then(allBooks => {
@@ -40,23 +40,23 @@ exports.getEBooks = (req,res,next) => {
 
 
 exports.getEBook = (req, res) => {
-    eBook.findById(req.params.id).exec((err, foundBook) => {
-      if(err) {
-          console.log(err);
-      } else {
-          eBook.find({category: foundBook.category}).limit(5).then(relatedBooks => {
+    eBook.findById(req.params.id).exec().then(foundBook => { 
+          eBook.find({category: foundBook.category}).limit(5).exec().then(relatedBooks => {
               res.render("books/eBook-detail", {
                 path: '/books/eBook/:id',
                 eBook: foundBook,
                 relatedBooks: relatedBooks
               })
           });
-      }
-    })
+      }).catch(err => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+      })
 }
   
 exports.getEditEBook = (req, res, next) => {
-    const editMode = req.query.edit;
+    const editMode = "eBook";
     if(!editMode) {
         return res.redirect('/');
     } else { 
@@ -86,7 +86,7 @@ exports.getEditEBook = (req, res, next) => {
   
 exports.editEBook = (req, res) => {
     const update = { title: req.body.title, price: req.body.price, imageUrl: req.file.path, description: req.body.description, category: req.body.category, autor: req.body.autor};
-    eBook.findByIdAndUpdate(req.body.bookId, update).then(() => {
+    eBook.findByIdAndUpdate(req.body.bookId, update).exec().then(() => {
             res.redirect('/books');
         }).catch(err => {
             const error = new Error(err);
@@ -95,9 +95,10 @@ exports.editEBook = (req, res) => {
         })
 }
 
+
 exports.deleteEBook = (req,res, next) => {
     const bookId = req.params.id;
-    eBook.findById(bookId).then(book => {
+    eBook.findById(bookId).exec().then(book => {
         if(!book) {
           return next(new Error('Book not found'));
         } else { 
