@@ -22,7 +22,7 @@ exports.addBook = (req, res, next) => {
     const category = req.body.category;
     const autor = req.body.autor;
     const description = req.body.description; 
-    const bookType = req.body.bookType === 'Book' ? 'Book' : 'eBook';
+    const bookType = req.body.bookType.toLowerCase() === 'book' ? 'Book' : 'eBook';
     if(!image) {
         return utils.renderError(res, title, price, description, autor, category);
     }
@@ -34,35 +34,27 @@ exports.addBook = (req, res, next) => {
     }
 
     const imageUrl = image.path;
+    const bookSchema = {
+      title: title,
+      price: price,
+      description: description,
+      category: category,
+      autor: autor,
+      imageUrl: imageUrl,
+      userId: req.user
+    };
     if(bookType === 'Book') { 
-      const book = new Book({
-          title: title,
-          price: price,
-          description: description,
-          category: category,
-          autor: autor,
-          imageUrl: imageUrl,
-          userId: req.user
-      });
+      const book = new Book(bookSchema);
       book.save().then(() => {
           res.redirect('/books');
-
       }).catch( err => {
           const error = new Error(err);
           error.httpStatusCode = 500;
           return next(error);
       })
     } else {
-      const book = new eBook({
-          title: title,
-          price: price,
-          description: description,
-          category: category,
-          autor: autor,
-          imageUrl: imageUrl,
-          userId: req.user
-      });
-      book.save().then(result => {
+      const book = new eBook(bookSchema);
+      book.save().then(() => {
           console.log('eBook added!');
           res.redirect('/eBooks');
 
@@ -80,7 +72,7 @@ exports.getBooks = (req,res,next) => {
     let noMatch; 
     if(req.query.filter === "category"){
       const regex = new RegExp(utils.escapeRegex(req.query.sort), 'gi');
-      Book.find({ category: regex }).then(allBooks => {
+      Book.find({ category: regex }).exec().then(allBooks => {
           utils.renderView(res, noMatch, allBooks, page, totalItems);
       }).catch(err => {
           const error = new Error(err);
@@ -90,7 +82,7 @@ exports.getBooks = (req,res,next) => {
     }
     else if(req.query.search) {
       const regex = new RegExp(utils.escapeRegex(req.query.search), 'gi');
-      Book.find({ title: regex }).then(allBooks => {
+      Book.find({ title: regex }).exec().then(allBooks => {
           utils.renderView(res, noMatch, allBooks, page, totalItems);
       }).catch(err => {
           const error = new Error(err);
@@ -98,7 +90,7 @@ exports.getBooks = (req,res,next) => {
           return next(error);
       });
     } else {
-      Book.find().countDocuments().then(numBooks => {
+      Book.find().countDocuments().exec().then(numBooks => {
           totalItems = numBooks;
           return Book.find()
             .skip((page - 1) * ITEMS_PER_PAGE)
@@ -139,7 +131,7 @@ exports.getEditBook = (req, res, next) => {
       return res.redirect('/');
     }
     const bookId = req.params.id;
-    Book.findById(bookId).then(book => {
+    Book.findById(bookId).exec().then(book => {
       if(!book) {
           return res.redirect('/books');
       }
@@ -161,7 +153,7 @@ exports.getEditBook = (req, res, next) => {
 
 exports.editBook = (req, res) => {
     const update = { title: req.body.title, price: req.body.price, imageUrl: req.file.path, description: req.body.description, category: req.body.category, autor: req.body.autor};
-    Book.findByIdAndUpdate(req.body.bookId, update).then(() => {
+    Book.findByIdAndUpdate(req.body.bookId, update).exec().then(() => {
         res.redirect('/books');
     }).catch(err => {
         const error = new Error(err);
@@ -172,7 +164,7 @@ exports.editBook = (req, res) => {
 
 exports.deleteBook = (req,res, next) => {
     const bookId = req.params.id;
-    Book.findById(bookId).then(book => {
+    Book.findById(bookId).exec().then(book => {
       if(!book) {
           return next(new Error('Book not found'));
       } else { 
