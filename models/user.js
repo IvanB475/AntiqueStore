@@ -37,11 +37,9 @@ const UserSchema = new Schema ({
 UserSchema.plugin(passportLocalMongoose);
 
 UserSchema.methods.addToCart = function(book, bookType) {
-    console.log(book._id);
     const cartBookIndex = this.cart.items.findIndex(cp => {
         return cp.bookId.toString() === book._id.toString();
     });
-    console.log(cartBookIndex);
     let newQuantity = 1;
     const updatedCartItems = [...this.cart.items];
 

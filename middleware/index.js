@@ -23,7 +23,6 @@ module.exports = function() {
     };
     this.toLowerCase = function toLowerCase(req, res, next) {
         req.body.username = req.body.username.toLowerCase();
-        console.log(req.body.username);
         next();
     }
 };

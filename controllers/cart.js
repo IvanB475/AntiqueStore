@@ -91,7 +91,7 @@ exports.getCart = (req, res, next) => {
       ],
       mode: 'payment',
       success_url: `${DOMAIN}/books`,
-      cancel_url: `${DOMAIN}/eBook`,
+      cancel_url: `${DOMAIN}/books`,
     }).then(session => {
         res.json({ id: session.id });
     }).catch(err => {

@@ -1,8 +1,6 @@
 const Joi = require('joi');
 
-exports.validator = (schema, property) => {
-    property = property || 'body';
-
+exports.validator = (schema) => {
     return (req, res, next) => {
         const { error } = schema.validate(req.body);
         const valid = error == null;
@@ -20,8 +18,7 @@ exports.validator = (schema, property) => {
 }
 
 
-exports.queryValidator = (schema, property) => {
-    property = property || 'query';
+exports.queryValidator = (schema) => {
 
     return (req, res, next) => {
         const { error } = schema.validate(req.query);
