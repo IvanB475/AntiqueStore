@@ -6,7 +6,7 @@ const stripe = require('stripe')(process.env.stripe);
 exports.postCart = (req, res, next) => {
     const bookId = req.body.bookId;
     const bookType = req.body.bookType;
-    mongoose.model(bookType).findById(bookId).then(book => {
+    mongoose.model(bookType).findById(bookId).exec().then(book => {
         return req.user.addToCart(book, bookType);
     }).then(() => {
         res.redirect('/cart');
@@ -20,7 +20,7 @@ exports.postCart = (req, res, next) => {
   
 exports.postCartRemove = (req,res, next) => {
     const bookId = req.body.bookId;
-    req.user.removeFromCart(bookId).then(() => {
+    req.user.removeFromCart(bookId).exec().then(() => {
         res.redirect('/cart');
     }).catch(err => {
         const error = new Error(err);
