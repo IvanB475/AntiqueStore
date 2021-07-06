@@ -72,7 +72,7 @@ exports.getCart = (req, res, next) => {
     })
 }
 
-  exports.createCheckoutSession = (req, res) => {
+  exports.createCheckoutSession = (req, res, next) => {
     const DOMAIN = process.env.PORT && process.env.HOST ? `${process.env.HOST}/${process.env.PORT}` : 'http://localhost:8081';
     stripe.checkout.sessions.create({
       payment_method_types: ['card'],

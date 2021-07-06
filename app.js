@@ -120,10 +120,15 @@ app.use((req, res, next) => {
 //basic rate limiter setup
 const limiter = rateLimit({
   windowMs: 2 * 60 * 1000, 
-  max: 100
+  max: 1000
 });
 
 app.use(limiter);
+
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
+  res.render('500.ejs');
+})
 
 
 
