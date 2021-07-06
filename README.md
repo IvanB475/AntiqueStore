@@ -1,7 +1,7 @@
 
 ## Short description
 Antique store is a portfolio project of online web/book shop that contains all the functionality web shop needs. 
-You can check out preview version at: http://18.159.104.4:8080/
+You can check out preview version at: http://18.195.203.94:8000/
 
 
 ### Project status
