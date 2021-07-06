@@ -11,6 +11,11 @@ exports.deleteFile = (filePath) => {
 
 exports.renderView = (res, noMatch, allBooks, page, totalItems) => {
         const ITEMS_PER_PAGE = 16;
+        allBooks.forEach(book => {
+            if(!fs.existsSync(book.imageUrl)) {
+              book.imageUrl = 'images/placeholder_image.jpg';
+            }
+          });
         res.render("books/books", {
           noMatch: noMatch,
           prods: allBooks,
@@ -46,6 +51,11 @@ exports.renderError = (res, title, price, description, autor, category) => {
 
 exports.renderEBooks =  (res, noMatch, allBooks, page, totalItems) => {
     const ITEMS_PER_PAGE = 8;
+    allBooks.forEach(book => {
+        if(!fs.existsSync(book.imageUrl)) {
+          book.imageUrl = 'images/placeholder_image.jpg';
+        }
+      });
     res.render("books/eBooks", {
         noMatch: noMatch,
         prods: allBooks,

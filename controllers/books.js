@@ -2,6 +2,7 @@ const Book = require("../models/book");
 const eBook = require("../models/eBook");
 const { validationResult } = require('express-validator');
 const utils = require("../util/helper");
+const fs = require('fs');
 
 const ITEMS_PER_PAGE = 16;
 
@@ -49,7 +50,7 @@ exports.addBook = (req, res, next) => {
           res.redirect('/books');
       }).catch( err => {
           const error = new Error(err);
-          error.httpStatusCode = 500;
+          error.status = 500;
           return next(error);
       })
     } else {
@@ -60,7 +61,7 @@ exports.addBook = (req, res, next) => {
 
       }).catch( err => {
           const error = new Error(err);
-          error.httpStatusCode = 500;
+          error.status = 500;
           return next(error);
       })
     }
@@ -76,7 +77,7 @@ exports.getBooks = (req,res,next) => {
           utils.renderView(res, noMatch, allBooks, page, totalItems);
       }).catch(err => {
           const error = new Error(err);
-          error.httpStatusCode = 500;
+          error.status = 500;
           return next(error);
       });
     }
@@ -86,7 +87,7 @@ exports.getBooks = (req,res,next) => {
           utils.renderView(res, noMatch, allBooks, page, totalItems);
       }).catch(err => {
           const error = new Error(err);
-          error.httpStatusCode = 500;
+          error.status = 500;
           return next(error);
       });
     } else {
@@ -99,15 +100,23 @@ exports.getBooks = (req,res,next) => {
           utils.renderView(res, noMatch, allBooks, page, totalItems);
       }).catch(err => {
           const error = new Error(err);
-          error.httpStatusCode = 500;
+          error.status = 500;
           return next(error);
       });
     }
 };
 
-exports.getBook = (req, res) => {
+exports.getBook = (req, res, next) => {
     Book.findById(req.params.id).exec().then(foundBook => {
         Book.find({category: foundBook.category}).limit(5).then(relatedBooks => {
+          if(!fs.existsSync(foundBook.imageUrl)) { 
+              foundBook.imageUrl = 'images/placeholder_image.jpg';
+          } 
+          relatedBooks.forEach(relatedBook => {
+            if(!fs.existsSync(relatedBook.imageUrl)) {
+              relatedBook.imageUrl = 'images/placeholder_image.jpg';
+            }
+          });
             res.render("books/book-detail", {
               path: '/books/:id',
               book: foundBook,
@@ -115,12 +124,12 @@ exports.getBook = (req, res) => {
             })
         }).catch(err => {
             const error = new Error(err);
-            error.httpStatusCode = 500;
+            error.status = 500;
             return next(error);
         })
       }).catch(err => {
           const error = new Error(err);
-          error.httpStatusCode = 500;
+          error.status = 500;
           return next(error);
       })
 }
@@ -146,18 +155,18 @@ exports.getEditBook = (req, res, next) => {
       });
     }).catch(err => {
       const error = new Error(err);
-      error.httpStatusCode = 500;
+      error.status = 500;
       return next(error);
     })
   };
 
-exports.editBook = (req, res) => {
+exports.editBook = (req, res, next) => {
     const update = { title: req.body.title, price: req.body.price, imageUrl: req.file.path, description: req.body.description, category: req.body.category, autor: req.body.autor};
     Book.findByIdAndUpdate(req.body.bookId, update).exec().then(() => {
         res.redirect('/books');
     }).catch(err => {
         const error = new Error(err);
-        error.httpStatusCode = 500;
+        error.status = 500;
         return next(error);
     })
 }

@@ -1,6 +1,7 @@
 const eBook = require("../models/eBook");
 const ITEMS_PER_PAGE = 8;
 const utils = require('../util/helper');
+const fs = require('fs');
 
 exports.getEBooks = (req,res,next) => {
     const page = +req.query.page || 1;
@@ -12,7 +13,7 @@ exports.getEBooks = (req,res,next) => {
               utils.renderEBooks(res, noMatch, allBooks, page, totalItems);
           }).catch(err => {
               const error = new Error(err);
-              error.httpStatusCode = 500;
+              error.status = 500;
               return next(error);
           });
       } else if(req.query.search) {
@@ -21,7 +22,7 @@ exports.getEBooks = (req,res,next) => {
               utils.renderEBooks(res, noMatch, allBooks, page, totalItems);
           }).catch(err => {
               const error = new Error(err);
-              error.httpStatusCode = 500;
+              error.status = 500;
               return next(error);
           });
       } else {
@@ -32,16 +33,24 @@ exports.getEBooks = (req,res,next) => {
               utils.renderEBooks(res, noMatch, allBooks, page, totalItems);
           }).catch(err => {
               const error = new Error(err);
-              error.httpStatusCode = 500;
+              error.status = 500;
               return next(error);
           });
       }
 };
 
 
-exports.getEBook = (req, res) => {
+exports.getEBook = (req, res, next) => {
     eBook.findById(req.params.id).exec().then(foundBook => { 
           eBook.find({category: foundBook.category}).limit(5).exec().then(relatedBooks => {
+            if(!fs.existsSync(foundBook.imageUrl)) {
+                foundBook.imageUrl = 'images/placeholder_image.jpg';
+              }
+            relatedBooks.forEach(relatedBook => {
+                if(!fs.existsSync(relatedBook.imageUrl)) {
+                  relatedBook.imageUrl = 'images/placeholder_image.jpg';
+                }
+              });
               res.render("books/eBook-detail", {
                 path: '/books/eBook/:id',
                 eBook: foundBook,
@@ -50,7 +59,7 @@ exports.getEBook = (req, res) => {
           });
       }).catch(err => {
         const error = new Error(err);
-        error.httpStatusCode = 500;
+        error.status = 404;
         return next(error);
       })
 }
@@ -77,20 +86,20 @@ exports.getEditEBook = (req, res, next) => {
             }
         }).catch(err => {
             const error = new Error(err);
-            error.httpStatusCode = 500;
+            error.status = 500;
             return next(error);
         })
     }
 };
   
   
-exports.editEBook = (req, res) => {
+exports.editEBook = (req, res, next) => {
     const update = { title: req.body.title, price: req.body.price, imageUrl: req.file.path, description: req.body.description, category: req.body.category, autor: req.body.autor};
     eBook.findByIdAndUpdate(req.body.bookId, update).exec().then(() => {
             res.redirect('/books');
         }).catch(err => {
             const error = new Error(err);
-            error.httpStatusCode = 500;
+            error.status = 500;
             return next(error);
         })
 }

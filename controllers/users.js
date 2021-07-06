@@ -5,7 +5,7 @@ const crypto = require('crypto');
 require('../middleware/index')();
 
 
-exports.postSignUp = (req, res) => {
+exports.postSignUp = (req, res, next) => {
   req.body.username = req.body.username.toLowerCase();
   const newUser = new User({username: req.body.username, email: req.body.email, status: "member", cart: { items: [] }});
   User.register(newUser, req.body.password).then(user => { 
@@ -36,7 +36,7 @@ exports.postSignUp = (req, res) => {
     })
   }).catch(err => {
     const error = new Error(err);
-    error.httpStatusCode = 500;
+    error.status = 500;
     return next(error);
   })
 };
@@ -49,14 +49,14 @@ exports.postLogin =
 }
 
 
-exports.postAdminRegister = (req, res) => {
+exports.postAdminRegister = (req, res, next) => {
     if (req.body.code === process.env.ADMIN_CODE){
         let update = { status: "admin"};
         User.findByIdAndUpdate(req.user._id, update).exec().then(() => {
             res.render("users/settings", { path: 'users/settings'});
         }).catch(err => {
             const error = new Error(err);
-            error.httpStatusCode = 500;
+            error.status = 500;
             return next(error);
         });
     } else {
@@ -72,7 +72,7 @@ exports.postSettings = (req, res, next) => {
         console.log(result);
     }).catch(err => {
         const error = new Error(err);
-        error.httpStatusCode = 500;
+        error.status = 500;
         return next(error);
     })
 }
@@ -107,12 +107,12 @@ exports.postReset = (req, res, next) => {
             res.redirect('/login');
           }).catch(err => {
             const error = new Error(err);
-            error.httpStatusCode = 500;
+            error.status = 500;
             return next(error);
           })
     }).catch(err => {
         const error = new Error(err);
-        error.httpStatusCode = 500;
+        error.status = 500;
         return next(error);
     })
 };
@@ -127,7 +127,7 @@ exports.postResetToken = (req, res, next) => {
           user.save();
         }).catch(err => {
           const error = new Error(err);
-          error.httpStatusCode = 500;
+          error.status = 500;
           return next(error);
         })
       } else {
@@ -155,7 +155,7 @@ exports.postResetToken = (req, res, next) => {
         res.redirect('/books');
       }).catch(err => {
         const error = new Error(err);
-        error.httpStatusCode = 500;
+        error.status = 500;
         return next(error);
       })
     })
@@ -166,7 +166,7 @@ exports.getResetToken = (req, res, next) => {
       res.render('users/resetpw', {token: req.params.token});
     }).catch(err => {
       const error = new Error(err);
-      error.httpStatusCode = 500;
+      error.status = 500;
       return next(error);
     });
 }
@@ -191,7 +191,7 @@ exports.getSettings = (req,res, next) => {
       res.render("users/settings", {path: 'users/settings', user: foundUser})
     }).catch(err => {
       const error = new Error(err);
-      error.httpStatusCode = 500;
+      error.status = 500;
       return next(error);
     });
 }
